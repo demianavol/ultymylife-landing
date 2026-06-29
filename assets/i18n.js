@@ -204,7 +204,7 @@
       "A coach, HR team or Telegram channel can gather a group and test engagement with a live audience.",
     "Основная навигация": "Main navigation",
     "Открыть Mini App": "Open Mini App",
-    "UltyMyLife — система управления жизнью ": "UltyMyLife — life management ",
+    "UltyMyLife — система управления жизнью": "UltyMyLife — life management",
     "внутри Telegram": "inside Telegram",
     "система": "life",
     "управления": "management",
@@ -319,7 +319,8 @@
     const translated = translateValue(trimmed);
     if (!translated) return;
     originals.set(node, raw);
-    node.nodeValue = raw.replace(trimmed, translated);
+    const next = raw.replace(trimmed, translated);
+    if (node.nodeValue !== next) node.nodeValue = next;
   }
 
   function translateAttributes(element) {
@@ -344,7 +345,8 @@
         originalAttrs.set(element, stored);
       }
       stored[attr] = value;
-      element.setAttribute(attr, value.replace(value.trim(), translated));
+      const next = value.replace(value.trim(), translated);
+      if (element.getAttribute(attr) !== next) element.setAttribute(attr, next);
     });
   }
 
