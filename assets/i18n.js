@@ -1,6 +1,10 @@
 (function () {
   const STORE_KEY = "ultymylife_lang";
   const SUPPORTED = new Set(["ru", "en"]);
+  const MINI_APP_LINKS = {
+    en: "https://t.me/UltyMyLife_bot/umlminiapp",
+    ru: "https://t.me/UltyMyLife_bot/umlminiapp?startapp=lang_ru",
+  };
   const pageCopy = {
     ru: {
       title: "UltyMyLife — система управления жизнью внутри Telegram",
@@ -354,8 +358,9 @@
     root.querySelectorAll('a[href="/ultymylife/deck.pdf"]').forEach((link) => {
       link.setAttribute("href", "/deck.pdf");
     });
-    root.querySelectorAll('a[href="https://t.me/UltyMyLife_bot"]').forEach((link) => {
-      link.setAttribute("href", "https://t.me/UltyMyLife_bot/umlminiapp");
+    const miniAppLink = currentLang === "ru" ? MINI_APP_LINKS.ru : MINI_APP_LINKS.en;
+    root.querySelectorAll('a[href^="https://t.me/UltyMyLife_bot"]').forEach((link) => {
+      link.setAttribute("href", miniAppLink);
     });
     root.querySelectorAll('a[href="https://t.me/USERNAME_PLACEHOLDER"]').forEach((link) => {
       link.setAttribute("href", "https://t.me/demianworkself");
