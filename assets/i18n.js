@@ -279,7 +279,7 @@
 
   const originals = new WeakMap();
   const originalAttrs = new WeakMap();
-  let currentLang = "ru";
+  let currentLang = "en";
   let applying = false;
 
   function normalizedLang(value) {
@@ -287,11 +287,11 @@
   }
 
   function getInitialLang() {
+    const path = window.location.pathname.replace(/\/+$/, "");
+    if (path.endsWith("/ru")) return "ru";
     const urlLang = normalizedLang(new URLSearchParams(window.location.search).get("lang"));
     if (urlLang) return urlLang;
-    const savedLang = normalizedLang(localStorage.getItem(STORE_KEY));
-    if (savedLang) return savedLang;
-    return navigator.language && navigator.language.toLowerCase().startsWith("ru") ? "ru" : "en";
+    return "en";
   }
 
   function translateValue(value) {
@@ -352,7 +352,19 @@
 
   function fixStandaloneLinks(root) {
     root.querySelectorAll('a[href="/ultymylife/deck.pdf"]').forEach((link) => {
-      link.setAttribute("href", "deck.pdf");
+      link.setAttribute("href", "/deck.pdf");
+    });
+    root.querySelectorAll('a[href="https://t.me/UltyMyLife_bot"]').forEach((link) => {
+      link.setAttribute("href", "https://t.me/UltyMyLife_bot/umlminiapp");
+    });
+    root.querySelectorAll('a[href="https://t.me/USERNAME_PLACEHOLDER"]').forEach((link) => {
+      link.setAttribute("href", "https://t.me/demianworkself");
+    });
+    root.querySelectorAll('a[href="mailto:EMAIL_PLACEHOLDER"]').forEach((link) => {
+      link.setAttribute("href", "https://t.me/demianworkself");
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noreferrer");
+      link.textContent = "@demianworkself";
     });
   }
 
@@ -408,8 +420,26 @@
     headerRow.querySelector(".uml-lang-switch")?.addEventListener("click", (event) => {
       const button = event.target.closest("[data-lang-option]");
       if (!button) return;
-      applyLang(button.dataset.langOption);
+      window.location.href = button.dataset.langOption === "ru" ? "/ru" : "/";
     });
+  }
+
+  function addLegalLinks() {
+    if (document.querySelector(".uml-legal-links")) return;
+    const footer = document.querySelector("footer > div");
+    if (!footer) return;
+    const prefix = currentLang === "ru" ? "/ru" : "";
+    const privacy = currentLang === "ru" ? "Конфиденциальность" : "Privacy";
+    const terms = currentLang === "ru" ? "Условия" : "Terms";
+    const contacts = currentLang === "ru" ? "Контакты" : "Contacts";
+    footer.insertAdjacentHTML(
+      "beforeend",
+      `<nav class="uml-legal-links" data-i18n-ignore>` +
+        `<a href="${prefix}/privacy">${privacy}</a>` +
+        `<a href="${prefix}/terms">${terms}</a>` +
+        `<a href="https://t.me/demianworkself" target="_blank" rel="noreferrer">${contacts}</a>` +
+      `</nav>`,
+    );
   }
 
   function addStyles() {
@@ -421,6 +451,7 @@
         ".uml-lang-switch button{min-width:34px;height:30px;border-radius:999px;color:rgba(255,255,255,.62);font:800 12px/1 Inter,Manrope,system-ui,sans-serif;letter-spacing:0;background:transparent;transition:background .18s ease,color .18s ease}" +
         ".uml-lang-switch button.is-active{background:linear-gradient(135deg,#61f4ff,#3aa7ff);color:#02060c}" +
         "@media(max-width:640px){.uml-lang-switch{margin-right:.4rem}.uml-lang-switch button{min-width:31px;height:28px;font-size:11px}}" +
+        ".uml-legal-links{display:flex;flex-wrap:wrap;gap:12px 20px}.uml-legal-links a{color:rgba(255,255,255,.55)}.uml-legal-links a:hover{color:#fff}" +
         "</style>",
     );
   }
@@ -429,11 +460,13 @@
     currentLang = getInitialLang();
     addStyles();
     addSwitch();
+    addLegalLinks();
     applyLang(currentLang);
     const observer = new MutationObserver(() => {
       if (applying) return;
       applying = true;
       addSwitch();
+      addLegalLinks();
       walk(document.body);
       applying = false;
       updateSwitch();
