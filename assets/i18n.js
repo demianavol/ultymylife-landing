@@ -436,12 +436,14 @@
     const prefix = currentLang === "ru" ? "/ru" : "";
     const privacy = currentLang === "ru" ? "Конфиденциальность" : "Privacy";
     const terms = currentLang === "ru" ? "Условия" : "Terms";
+    const consent = currentLang === "ru" ? "Согласие на данные" : "Data consent";
     const contacts = currentLang === "ru" ? "Контакты" : "Contacts";
     footer.insertAdjacentHTML(
       "beforeend",
       `<nav class="uml-legal-links" data-i18n-ignore>` +
         `<a href="${prefix}/privacy">${privacy}</a>` +
         `<a href="${prefix}/terms">${terms}</a>` +
+        `<a href="${prefix}/consent">${consent}</a>` +
         `<a href="https://t.me/demianworkself" target="_blank" rel="noreferrer">${contacts}</a>` +
       `</nav>`,
     );
