@@ -55,6 +55,26 @@ if (!ruConsent.includes('Согласие на обработку персона
   throw new Error('Standalone Russian personal-data consent is missing');
 if (!consent.includes('Consent to Personal Data Processing'))
   throw new Error('Standalone English personal-data consent is missing');
+for (const statement of [
+  'Содержимое задач, привычек и пользовательских заметок шифруется на устройстве до отправки резервной копии.',
+  'Оператор не хранит ключ расшифровки в своей базе.',
+  'В удалённый ИИ не передаются названия, описания и заметки пользователя.',
+]) {
+  if (!ruPrivacy.includes(statement) || !ruConsent.includes(statement))
+    throw new Error(`Russian privacy pages are missing confidentiality statement: ${statement}`);
+}
+for (const statement of [
+  'Task, habit, and user note content is encrypted on the device before the backup is sent.',
+  'The Operator does not store the decryption key in its database.',
+  'User-created names, descriptions, and notes are not sent to the remote AI.',
+]) {
+  if (!privacy.includes(statement) || !consent.includes(statement))
+    throw new Error(`English privacy pages are missing confidentiality statement: ${statement}`);
+}
+if (ruPrivacy.includes('До трансграничной передачи оператор должен') || ruPrivacy.includes('Конкретная инфраструктура должна поддерживать') || ruConsent.includes('Моё действие не заменяет обязанность Оператора'))
+  throw new Error('Internal Russian compliance instructions remain in public legal pages');
+if (privacy.includes('Before a cross-border transfer, Controller must') || consent.includes("My action does not replace Controller’s duty"))
+  throw new Error('Internal English compliance instructions remain in public legal pages');
 for (const route of ['/privacy', '/terms', '/consent']) {
   if (!all.includes(`href="${route}"`) || !all.includes(`href="/ru${route}"`))
     throw new Error(`RU/EN legal cross-link is missing: ${route}`);
