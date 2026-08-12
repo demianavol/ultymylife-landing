@@ -265,10 +265,7 @@
     document.querySelectorAll(".hero-module-button,.product-tab,.hero-real-phone-button").forEach((button) => {
       if (button.dataset.umlDynamicReady) return;
       button.dataset.umlDynamicReady = "true";
-      button.addEventListener("click", () => {
-        requestAnimationFrame(() => requestAnimationFrame(refreshDynamicProduct));
-        setTimeout(refreshDynamicProduct, 80);
-      });
+      button.addEventListener("click", scheduleProductRefresh);
     });
   }
 
@@ -512,7 +509,7 @@
   function refreshAll() {
     if (!document.getElementById("top") || document.body.dataset.umlRefreshReady) return false;
     document.body.dataset.umlRefreshReady = "true";
-    document.body.classList.add("uml-refreshed", "uml-low-glow");
+    document.body.classList.add("uml-refreshed", "uml-low-glow", "uml-performance");
     const c = content();
     refreshNavigation();
     refreshHero();
@@ -537,14 +534,22 @@
     if (event.key === "Escape" && document.querySelector(".uml-feature-modal")) closeModal();
   });
 
-  let refreshQueued = false;
-  const observer = new MutationObserver(() => {
-    if (refreshQueued) return;
-    refreshQueued = true;
-    requestAnimationFrame(() => { refreshQueued = false; refreshAll(); refreshDynamicProduct(); });
-  });
-  observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["src", "poster"] });
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", refreshAll);
-  else refreshAll();
-  setTimeout(refreshDynamicProduct, 0);
+  let productRefreshQueued = false;
+  function scheduleProductRefresh() {
+    if (productRefreshQueued) return;
+    productRefreshQueued = true;
+    requestAnimationFrame(() => {
+      productRefreshQueued = false;
+      refreshDynamicProduct();
+    });
+  }
+  function initializeRefresh(attempt = 0) {
+    if (refreshAll()) {
+      requestAnimationFrame(refreshDynamicProduct);
+      return;
+    }
+    if (attempt < 12) setTimeout(() => initializeRefresh(attempt + 1), 50);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => initializeRefresh());
+  else initializeRefresh();
 })();

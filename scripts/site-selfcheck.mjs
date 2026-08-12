@@ -47,7 +47,7 @@ const cname = read('CNAME').trim();
 for (const page of [rootPage, ruPage]) {
   if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
   if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
-  if (!page.includes('landing-refresh.js?v=4') || !page.includes('landing-refresh.css?v=4')) throw new Error('Landing refresh cache version is stale');
+  if (!page.includes('landing-refresh.js?v=6') || !page.includes('landing-refresh.css?v=6')) throw new Error('Landing refresh cache version is stale');
 }
 
 for (const contract of [
@@ -59,6 +59,7 @@ for (const contract of [
   'Дыхание и медитации', 'uml-modal-poster-bg',
   'removeSectionDescriptions', 'uml-low-glow', 'uml-footer-row',
   'navTargets', 'heroBadges', 'lang() === "ru" ? "/ru/" : "/"',
+  'uml-performance', 'scheduleProductRefresh', 'initializeRefresh',
 ]) {
   if (!refresh.includes(contract)) throw new Error(`Landing refresh behavior missing: ${contract}`);
 }
@@ -71,6 +72,7 @@ if (!refreshCss.includes('.uml-footer-refined')) throw new Error('Landing footer
 if (!refreshCss.includes('.uml-modal-poster-bg')) throw new Error('Modal media needs an edge-filling poster backdrop');
 if (!refreshCss.includes('align-self:flex-start')) throw new Error('Compact card icons must remain top-aligned');
 if (!refreshCss.includes('box-shadow:none!important')) throw new Error('Landing needs restrained glow policy');
+if (!refreshCss.includes('.uml-performance')) throw new Error('Landing needs a performance-first rendering policy');
 
 if (!rootPage.includes('<html lang="en">')) throw new Error('Root landing must be English');
 if (!ruPage.includes('<html lang="ru">')) throw new Error('/ru landing must be Russian');
