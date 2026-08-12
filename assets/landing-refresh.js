@@ -182,6 +182,14 @@
     hero?.querySelectorAll(".hero-badges span").forEach((badge, index) => text(badge, heroBadges[index]));
   }
 
+  function stopHeroMotion() {
+    const hero = document.getElementById("top");
+    if (!hero) return;
+    const stage = hero.querySelector(".hero-device-stage");
+    stage?.classList.add("hero-device-static");
+    hero.querySelectorAll(".hero-shot,.floating-card,.hero-ring").forEach((node) => node.remove());
+  }
+
   function refreshEnglishMedia() {
     if (lang() !== "en") return;
     const replacements = {
@@ -510,6 +518,7 @@
     if (!document.getElementById("top") || document.body.dataset.umlRefreshReady) return false;
     document.body.dataset.umlRefreshReady = "true";
     document.body.classList.add("uml-refreshed", "uml-low-glow", "uml-performance");
+    stopHeroMotion();
     const c = content();
     refreshNavigation();
     refreshHero();
