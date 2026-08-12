@@ -41,3 +41,15 @@ No actionable P0/P1/P2 differences remain for requested regression fix.
 ## Final result
 
 final result: passed
+
+## 2026-08-12 — Bilingual feature SEO pages
+
+- Automated contract: 18 static feature pages, 20 sitemap URLs, unique titles/descriptions, canonical, reciprocal RU/EN hreflang, x-default, JSON-LD, social metadata, FAQ, and Telegram CTA passed.
+- HTTP smoke test: `/`, `/ru/`, all 18 feature routes, `/sitemap.xml`, and `/robots.txt` returned 200 locally.
+- Desktop QA: `/habits/` at 1265px viewport; one H1, product image, two FAQ items, three related links, RU switch, correct English Telegram CTA, no horizontal overflow, no console errors.
+- Mobile QA: `/ru/habits/` at 390x844; localized H1 and metadata, product image visible, correct EN switch and Russian Telegram CTA, no horizontal overflow, no console errors.
+- Landing regression: `/ru/` retains original 68.48px H1 sizing, `translate(-30px, -90px)` hero position, nine crawlable directory links, and no horizontal overflow.
+- Performance: feature pages load static HTML/CSS and product artwork only; no React bundle, video, autoplay, or looping animation.
+- Build note: repository has no build script because GitHub Pages serves committed static files directly; HTTP route verification replaces a nonexistent build step.
+
+Final result: passed
