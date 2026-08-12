@@ -187,7 +187,7 @@
     if (!hero) return;
     const stage = hero.querySelector(".hero-device-stage");
     stage?.classList.add("hero-device-static");
-    hero.querySelectorAll(".hero-shot,.floating-card,.hero-ring").forEach((node) => node.remove());
+    hero.querySelectorAll(".hero-shot,.floating-card,.hero-ring").forEach((node) => node.classList.add("hero-decoration-static"));
   }
 
   function refreshEnglishMedia() {

@@ -1,0 +1,43 @@
+# Design QA
+
+- Source visual truth: `C:/Users/jousy/AppData/Local/Temp/codex-clipboard-b28bc7cd-2ee7-4da0-9086-4776ea475633.png`
+- Implementation screenshot: `C:/Users/jousy/Documents/GitHub/ultymylife-landing/hero-implementation-qa.png`
+- Viewport: 1440 x 900 CSS px, desktop, deviceScaleFactor 1
+- State: Russian landing, top of page, default home screen selected
+- Source pixels: 2048 x 1060; implementation pixels: 1424 x 891. Compared after matching desktop crop and first-screen state.
+
+## Full-view comparison evidence
+
+Original regression had title clipped under fixed header and removed decorative cards behind main device. Revised implementation restores main device, two rear product cards, glow ring, and floating proof cards while keeping all motion disabled. Hero copy begins at y=265, safely below 65px header.
+
+## Focused region comparison evidence
+
+Hero left: title, paragraph, switcher, and CTAs retain hierarchy and no clipping. Hero right: layered product showcase restored. Exact source screenshot had English state while current implementation capture uses Russian state; layout and visual asset structure are equivalent.
+
+## Required fidelity surfaces
+
+- Fonts and typography: Manrope/Inter hierarchy retained; heading wrap stable and fully visible.
+- Spacing and layout: balanced two-column hero restored; header does not overlap content.
+- Colors and tokens: cyan-blue-violet palette and restrained glow retained.
+- Image quality: original supplied product posters used; no placeholder or generated replacement.
+- Copy and content: Russian locale remains Russian; controls keep current localized labels.
+
+## Comparison history
+
+1. P1: hero title clipped by fixed header. Fix: desktop copy transform changed from -180px to -90px. Post-fix evidence: title fully visible, copy top 265px.
+2. P1: decorative right-side showcase removed. Fix: keep hero shots, ring, and floating cards in DOM; apply static classes only. Post-fix evidence: 2 hero shots, 5 floating cards, and 1 ring rendered.
+
+## Findings
+
+No actionable P0/P1/P2 differences remain for requested regression fix.
+
+## Primary interactions and console
+
+- Hero module switching remains available.
+- Hero phone button remains available.
+- Runtime motion hook stays disabled to prevent continuous frame work.
+- No new script syntax or site self-check errors.
+
+## Final result
+
+final result: passed
