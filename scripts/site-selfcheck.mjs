@@ -14,6 +14,15 @@ const required = [
   'consent/index.html',
   'ru/consent/index.html',
   'assets/legal.css',
+  'assets/landing-refresh.js',
+  'assets/landing-refresh.css',
+  'assets/product/en/home.png',
+  'assets/product/en/recovery.png',
+  'assets/product/en/tasks.png',
+  'assets/product/en/habits.png',
+  'assets/product/en/sleep.png',
+  'assets/product/en/training.png',
+  'assets/product/en/mental.png',
 ];
 
 for (const file of required) {
@@ -31,7 +40,37 @@ const ruTerms = read('ru/terms/index.html');
 const consentRedirect = read('consent/index.html');
 const ruConsentRedirect = read('ru/consent/index.html');
 const i18n = read('assets/i18n.js');
+const refresh = read('assets/landing-refresh.js');
+const refreshCss = read('assets/landing-refresh.css');
 const cname = read('CNAME').trim();
+
+for (const page of [rootPage, ruPage]) {
+  if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
+  if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
+  if (!page.includes('landing-refresh.js?v=4') || !page.includes('landing-refresh.css?v=4')) throw new Error('Landing refresh cache version is stale');
+}
+
+for (const contract of [
+  'role", "dialog', 'aria-modal', 'event.key === "Escape"', 'playsinline',
+  'startapp=lang_ru', '/assets/product/en/home.png', '/assets/product/en/habits.png',
+  'Интерфейс внутри Telegram', 'uml-telegram-preview', 'Standalone website',
+  'refreshDynamicProduct', 'uml-pilot-experience', 'uml-journey-compact',
+  'hero-real-phone-button', 'refreshCompactCards', 'refreshFooter',
+  'Дыхание и медитации', 'uml-modal-poster-bg',
+  'removeSectionDescriptions', 'uml-low-glow', 'uml-footer-row',
+  'navTargets', 'heroBadges', 'Почему это сложно',
+]) {
+  if (!refresh.includes(contract)) throw new Error(`Landing refresh behavior missing: ${contract}`);
+}
+if (!refreshCss.includes('@media(max-width:767px)')) throw new Error('Mobile landing policy is missing');
+if (!refreshCss.includes('@media(prefers-reduced-motion:reduce)')) throw new Error('Reduced-motion policy is missing');
+if (!refreshCss.includes('object-fit:contain')) throw new Error('Modal videos must remain fully visible');
+if (!refreshCss.includes('.uml-refreshed #top h1{line-height:1.02')) throw new Error('Hero heading needs safe line spacing');
+if (!refreshCss.includes('left:50%;transform:translateX(-50%)')) throw new Error('Desktop navigation must be centered');
+if (!refreshCss.includes('.uml-footer-refined')) throw new Error('Landing footer needs structured layout');
+if (!refreshCss.includes('.uml-modal-poster-bg')) throw new Error('Modal media needs an edge-filling poster backdrop');
+if (!refreshCss.includes('align-self:flex-start')) throw new Error('Compact card icons must remain top-aligned');
+if (!refreshCss.includes('box-shadow:none!important')) throw new Error('Landing needs restrained glow policy');
 
 if (!rootPage.includes('<html lang="en">')) throw new Error('Root landing must be English');
 if (!ruPage.includes('<html lang="ru">')) throw new Error('/ru landing must be Russian');
