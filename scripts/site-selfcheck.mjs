@@ -58,7 +58,7 @@ for (const contract of [
   'hero-real-phone-button', 'refreshCompactCards', 'refreshFooter',
   'Дыхание и медитации', 'uml-modal-poster-bg',
   'removeSectionDescriptions', 'uml-low-glow', 'uml-footer-row',
-  'navTargets', 'heroBadges', 'Почему это сложно',
+  'navTargets', 'heroBadges', 'lang() === "ru" ? "/ru/" : "/"',
 ]) {
   if (!refresh.includes(contract)) throw new Error(`Landing refresh behavior missing: ${contract}`);
 }
