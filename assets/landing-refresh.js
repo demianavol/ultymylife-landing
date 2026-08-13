@@ -177,9 +177,17 @@
     if (heading) heading.innerHTML = c.heroTitle;
     text(paragraph, c.heroText);
     const heroBadges = lang() === "ru"
-      ? ["Привычки", "Тренировки", "Дыхание", "Тренировка ума", "ИИ-подсказки"]
-      : ["Habits", "Training", "Breathing", "Mental fitness", "AI-ready"];
-    hero?.querySelectorAll(".hero-badges span").forEach((badge, index) => text(badge, heroBadges[index]));
+      ? [["Привычки", "/ru/habits/"], ["Тренировки", "/ru/workouts/"], ["Дыхание", "/ru/breathing-meditation/"], ["Тренировка ума", "/ru/mental-fitness/"], ["ИИ-подсказки", "/ru/ai-assistant/"], ["Сон", "/ru/sleep/"]]
+      : [["Habits", "/habits/"], ["Workouts", "/workouts/"], ["Breathing", "/breathing-meditation/"], ["Mental fitness", "/mental-fitness/"], ["AI assistant", "/ai-assistant/"], ["Sleep", "/sleep/"]];
+    hero?.querySelectorAll(".hero-badges span").forEach((badge, index) => {
+      const item = heroBadges[index];
+      if (!item) return;
+      const link = document.createElement("a");
+      link.className = "hero-topic-link";
+      link.href = item[1];
+      link.textContent = item[0];
+      badge.replaceWith(link);
+    });
   }
 
   function stopHeroMotion() {
@@ -491,9 +499,7 @@
     const ru = lang() === "ru";
     inner.className = "uml-footer-refined";
     inner.dataset.i18nIgnore = "true";
-    inner.innerHTML = `<div class="uml-footer-row"><div class="uml-footer-brand"><strong>UltyMyLife</strong><span>${ru ? "Ваш день — в одной системе внутри Telegram" : "Your day, together inside Telegram"}</span></div>
-      <nav class="uml-footer-social" aria-label="${ru ? "Ссылки" : "Links"}"><a href="https://t.me/UltyMyLife_bot/umlminiapp${ru ? "?startapp=lang_ru" : ""}" target="_blank" rel="noreferrer">${ru ? "Открыть Mini App" : "Open Mini App"}</a><a href="https://t.me/demianworkself" target="_blank" rel="noreferrer">${ru ? "Связаться" : "Contact"}</a></nav></div>
-      <div class="uml-footer-meta"><span>© 2026 UltyMyLife</span><nav class="uml-legal-links" aria-label="${ru ? "Правовые документы" : "Legal"}"><a href="${ru ? "/ru/privacy" : "/privacy"}">${ru ? "Конфиденциальность" : "Privacy"}</a><a href="${ru ? "/ru/terms" : "/terms"}">${ru ? "Условия" : "Terms"}</a></nav></div>`;
+    inner.innerHTML = `<div class="uml-footer-meta"><span>© 2026 UltyMyLife</span><nav class="uml-legal-links" aria-label="${ru ? "Правовые документы" : "Legal"}"><a href="${ru ? "/ru/privacy" : "/privacy"}">${ru ? "Конфиденциальность" : "Privacy"}</a><a href="${ru ? "/ru/terms" : "/terms"}">${ru ? "Условия" : "Terms"}</a></nav></div>`;
   }
 
   function refreshRemainingLabels() {
