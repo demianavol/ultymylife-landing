@@ -98,8 +98,9 @@ for (const locale of ['en', 'ru']) {
     const expectedImage = locale === 'ru' ? (expectedMedia.ruImage || expectedMedia.image) : (expectedMedia.enImage || expectedMedia.image);
     if (!html.includes(`poster="${imagePrefix}${expectedImage}.${imageExtension}"`)) fail(`${relativePath}: wrong section poster`);
     if (!html.includes(`data-video-src="/assets/product/${expectedMedia.video}"`)) fail(`${relativePath}: wrong section video`);
-    if (!html.includes('/assets/feature-video.css?v=2') || !html.includes('/assets/feature-video.js?v=2')) fail(`${relativePath}: feature assets must be cache-versioned`);
+    if (!html.includes('/assets/feature-video.css?v=3') || !html.includes('/assets/feature-video.js?v=3')) fail(`${relativePath}: feature assets must be cache-versioned`);
     if (!html.includes('<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">')) fail(`${relativePath}: HTML cache prevention missing`);
+    if (html.indexOf('<section class="final-cta">') > html.indexOf('<section class="related content-section"')) fail(`${relativePath}: final CTA must appear before related features`);
   }
 }
 
@@ -110,6 +111,12 @@ if (featureVideoCss.includes('object-fit:cover')) fail('feature video: must not 
 if (!featureVideoCss.includes('.final-cta{background:transparent')) fail('final CTA: expected transparent background');
 if (!featureVideoCss.includes('.final-cta .primary-button{min-height:60px')) fail('final CTA: expected larger action button');
 if (!featureVideoCss.includes('.product-art{padding:5px')) fail('feature hero: expected a thinner media frame');
+
+const seoPagesCss = read('assets/seo-pages.css');
+if (!seoPagesCss.includes('scroll-snap-type:y proximity')) fail('feature mobile: proximity scroll snap missing');
+if (!seoPagesCss.includes('100svh')) fail('feature mobile: small viewport sizing missing');
+if (!seoPagesCss.includes('scroll-snap-type:x mandatory')) fail('feature mobile: horizontal card rails missing');
+if (!seoPagesCss.includes('scroll-snap-type:none')) fail('feature mobile: reduced-motion snap opt-out missing');
 
 const sitemap = read('sitemap.xml');
 const expectedUrls = [`${origin}/`, `${origin}/ru/`];

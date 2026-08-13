@@ -120,8 +120,8 @@ function renderPage(feature, locale) {
     <link rel="alternate" hreflang="x-default" href="${enUrl}">
     <link rel="icon" href="/assets/logo.jpg">
     <link rel="stylesheet" href="/assets/seo-pages.css">
-    <link rel="stylesheet" href="/assets/feature-video.css?v=2">
-    <script src="/assets/feature-video.js?v=2" defer></script>
+    <link rel="stylesheet" href="/assets/feature-video.css?v=3">
+    <script src="/assets/feature-video.js?v=3" defer></script>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="${SITE.name}">
     <meta property="og:title" content="${escapeHtml(copy.title)}">
@@ -182,15 +182,15 @@ function renderPage(feature, locale) {
         <h2 id="faq-title">${labels.faq}</h2>
         <div class="faq-list">${renderFaq(copy.faq)}</div>
       </section>
-      <section class="related content-section" aria-labelledby="related-title">
-        <p class="section-kicker">${labels.related}</p>
-        <h2 id="related-title">${labels.related}</h2>
-        <div class="related-grid">${renderRelated(feature, locale)}</div>
-      </section>
       <section class="final-cta">
         <p class="eyebrow">${SITE.name}</p>
         <h2>${isRu ? 'Начните с одного полезного раздела' : 'Start with one useful section'}</h2>
         <a class="primary-button" href="${telegramUrl(locale)}" rel="noopener">${labels.try}<span aria-hidden="true">↗</span></a>
+      </section>
+      <section class="related content-section" aria-labelledby="related-title">
+        <p class="section-kicker">${labels.related}</p>
+        <h2 id="related-title">${labels.related}</h2>
+        <div class="related-grid">${renderRelated(feature, locale)}</div>
       </section>
     </main>
     <footer><a href="${homePath}">${SITE.name}</a><span>© 2026 ${SITE.name}</span></footer>

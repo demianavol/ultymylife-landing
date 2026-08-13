@@ -48,7 +48,7 @@ const cname = read('CNAME').trim();
 for (const page of [rootPage, ruPage]) {
   if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
   if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
-  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=9') || !page.includes('landing-refresh.css?v=9')) throw new Error('Landing refresh cache version is stale');
+  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=10') || !page.includes('landing-refresh.css?v=10')) throw new Error('Landing refresh cache version is stale');
 }
 
 for (const contract of [
@@ -75,6 +75,10 @@ if (!refreshCss.includes('.uml-modal-poster-bg')) throw new Error('Modal media n
 if (!refreshCss.includes('align-self:flex-start')) throw new Error('Compact card icons must remain top-aligned');
 if (!refreshCss.includes('box-shadow:none!important')) throw new Error('Landing needs restrained glow policy');
 if (!refreshCss.includes('.uml-performance')) throw new Error('Landing needs a performance-first rendering policy');
+if (!refreshCss.includes('scroll-snap-type:y proximity')) throw new Error('Landing mobile proximity scroll snap is missing');
+if (!refreshCss.includes('100svh')) throw new Error('Landing mobile small viewport sizing is missing');
+if (!refreshCss.includes('scroll-snap-type:x mandatory')) throw new Error('Landing mobile horizontal card rails are missing');
+if (!refreshCss.includes('scroll-snap-type:none!important')) throw new Error('Landing reduced-motion snap opt-out is missing');
 if (!appBundle.includes('function yf(){return!0}')) throw new Error('Runtime motion must be disabled at its source');
 if (refresh.includes('hero.querySelectorAll(".hero-shot,.floating-card,.hero-ring").forEach((node) => node.remove())')) throw new Error('Hero decoration must stay visible');
 if (!refreshCss.includes('.uml-refreshed #top .hero-copy{ transform:translate(-30px,-90px)}')) throw new Error('Desktop hero copy must stay below the fixed header');
