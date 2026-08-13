@@ -98,7 +98,7 @@ for (const locale of ['en', 'ru']) {
     const expectedImage = locale === 'ru' ? (expectedMedia.ruImage || expectedMedia.image) : (expectedMedia.enImage || expectedMedia.image);
     if (!html.includes(`poster="${imagePrefix}${expectedImage}.${imageExtension}"`)) fail(`${relativePath}: wrong section poster`);
     if (!html.includes(`data-video-src="/assets/product/${expectedMedia.video}"`)) fail(`${relativePath}: wrong section video`);
-    if (!html.includes('/assets/feature-video.css?v=3') || !html.includes('/assets/feature-video.js?v=3')) fail(`${relativePath}: feature assets must be cache-versioned`);
+    if (!html.includes('/assets/seo-pages.css?v=4') || !html.includes('/assets/feature-video.css?v=4') || !html.includes('/assets/feature-video.js?v=3')) fail(`${relativePath}: feature assets must be cache-versioned`);
     if (!html.includes('<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">')) fail(`${relativePath}: HTML cache prevention missing`);
     if (html.indexOf('<section class="final-cta">') > html.indexOf('<section class="related content-section"')) fail(`${relativePath}: final CTA must appear before related features`);
   }
@@ -113,10 +113,11 @@ if (!featureVideoCss.includes('.final-cta .primary-button{min-height:60px')) fai
 if (!featureVideoCss.includes('.product-art{padding:5px')) fail('feature hero: expected a thinner media frame');
 
 const seoPagesCss = read('assets/seo-pages.css');
-if (!seoPagesCss.includes('scroll-snap-type:y proximity')) fail('feature mobile: proximity scroll snap missing');
-if (!seoPagesCss.includes('100svh')) fail('feature mobile: small viewport sizing missing');
-if (!seoPagesCss.includes('scroll-snap-type:x mandatory')) fail('feature mobile: horizontal card rails missing');
-if (!seoPagesCss.includes('scroll-snap-type:none')) fail('feature mobile: reduced-motion snap opt-out missing');
+if (!seoPagesCss.includes('--mobile-gutter:20px')) fail('feature mobile: 20px gutter missing');
+if (!seoPagesCss.includes('grid-template-columns:1fr')) fail('feature mobile: one-column layout missing');
+if (!seoPagesCss.includes('overflow-x:clip')) fail('feature mobile: page overflow guard missing');
+if (seoPagesCss.includes('scroll-snap-type:y proximity')) fail('feature mobile: vertical scroll snap must be removed');
+if (seoPagesCss.includes('100svh')) fail('feature mobile: forced viewport heights must be removed');
 
 const sitemap = read('sitemap.xml');
 const expectedUrls = [`${origin}/`, `${origin}/ru/`];

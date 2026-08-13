@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "python3 -m http.server --bind 127.0.0.1 5174",
     "generate:seo": "node scripts/generate-seo-pages.mjs",
+    "build": "npm run generate:seo && npm test",
     "test": "node scripts/site-selfcheck.mjs && node scripts/seo-selfcheck.mjs"
   }
 }

@@ -119,8 +119,8 @@ function renderPage(feature, locale) {
     <link rel="alternate" hreflang="ru" href="${ruUrl}">
     <link rel="alternate" hreflang="x-default" href="${enUrl}">
     <link rel="icon" href="/assets/logo.jpg">
-    <link rel="stylesheet" href="/assets/seo-pages.css">
-    <link rel="stylesheet" href="/assets/feature-video.css?v=3">
+    <link rel="stylesheet" href="/assets/seo-pages.css?v=4">
+    <link rel="stylesheet" href="/assets/feature-video.css?v=4">
     <script src="/assets/feature-video.js?v=3" defer></script>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="${SITE.name}">

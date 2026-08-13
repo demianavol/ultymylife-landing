@@ -48,7 +48,7 @@ const cname = read('CNAME').trim();
 for (const page of [rootPage, ruPage]) {
   if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
   if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
-  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=10') || !page.includes('landing-refresh.css?v=10')) throw new Error('Landing refresh cache version is stale');
+  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=10') || !page.includes('landing-refresh.css?v=11')) throw new Error('Landing refresh cache version is stale');
 }
 
 for (const contract of [
@@ -65,7 +65,7 @@ for (const contract of [
 ]) {
   if (!refresh.includes(contract)) throw new Error(`Landing refresh behavior missing: ${contract}`);
 }
-if (!refreshCss.includes('@media(max-width:767px)')) throw new Error('Mobile landing policy is missing');
+if (!refreshCss.includes('@media(max-width:768px)')) throw new Error('Mobile landing policy is missing');
 if (!refreshCss.includes('@media(prefers-reduced-motion:reduce)')) throw new Error('Reduced-motion policy is missing');
 if (!refreshCss.includes('object-fit:contain')) throw new Error('Modal videos must remain fully visible');
 if (!refreshCss.includes('.uml-refreshed #top h1{line-height:1.02')) throw new Error('Hero heading needs safe line spacing');
@@ -75,10 +75,12 @@ if (!refreshCss.includes('.uml-modal-poster-bg')) throw new Error('Modal media n
 if (!refreshCss.includes('align-self:flex-start')) throw new Error('Compact card icons must remain top-aligned');
 if (!refreshCss.includes('box-shadow:none!important')) throw new Error('Landing needs restrained glow policy');
 if (!refreshCss.includes('.uml-performance')) throw new Error('Landing needs a performance-first rendering policy');
-if (!refreshCss.includes('scroll-snap-type:y proximity')) throw new Error('Landing mobile proximity scroll snap is missing');
-if (!refreshCss.includes('100svh')) throw new Error('Landing mobile small viewport sizing is missing');
-if (!refreshCss.includes('scroll-snap-type:x mandatory')) throw new Error('Landing mobile horizontal card rails are missing');
-if (!refreshCss.includes('scroll-snap-type:none!important')) throw new Error('Landing reduced-motion snap opt-out is missing');
+if (!refreshCss.includes('--mobile-gutter:20px')) throw new Error('Landing mobile gutter contract is missing');
+if (!refreshCss.includes('grid-template-columns:1fr!important')) throw new Error('Landing mobile one-column grid contract is missing');
+if (!refreshCss.includes('width:100%!important')) throw new Error('Landing mobile full-width control contract is missing');
+if (!refreshCss.includes('overflow-x:clip')) throw new Error('Landing page overflow guard is missing');
+if (refreshCss.includes('scroll-snap-type:y proximity')) throw new Error('Landing must not use vertical scroll snap');
+if (refreshCss.includes('min-height:100svh')) throw new Error('Landing must not force viewport-height mobile sections');
 if (!appBundle.includes('function yf(){return!0}')) throw new Error('Runtime motion must be disabled at its source');
 if (refresh.includes('hero.querySelectorAll(".hero-shot,.floating-card,.hero-ring").forEach((node) => node.remove())')) throw new Error('Hero decoration must stay visible');
 if (!refreshCss.includes('.uml-refreshed #top .hero-copy{ transform:translate(-30px,-90px)}')) throw new Error('Desktop hero copy must stay below the fixed header');
