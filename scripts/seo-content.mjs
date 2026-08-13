@@ -240,6 +240,24 @@ for (const feature of FEATURES) {
   }));
 }
 
+const sharedFaq = {
+  en: [
+    { question: 'Do I need to install another app?', answer: 'No. UltyMyLife opens inside Telegram as a Mini App, so you can start without another download.' },
+    { question: 'Can I begin with only this section?', answer: 'Yes. Start with what matters now and add other sections only when they become useful.' },
+    { question: 'Where can I open UltyMyLife?', answer: 'Open it from the UltyMyLife Telegram bot or any Mini App link.' },
+  ],
+  ru: [
+    { question: 'Нужно ли устанавливать отдельное приложение?', answer: 'Нет. UltyMyLife открывается внутри Telegram как Mini App — ничего дополнительно скачивать не нужно.' },
+    { question: 'Можно начать только с этого раздела?', answer: 'Да. Начните с того, что важно сейчас, а остальные разделы подключайте, когда они понадобятся.' },
+    { question: 'Где открыть UltyMyLife?', answer: 'Откройте его через бота UltyMyLife в Telegram или по ссылке на Mini App.' },
+  ],
+};
+
+for (const feature of FEATURES) {
+  feature.en.faq.push(...sharedFaq.en);
+  feature.ru.faq.push(...sharedFaq.ru);
+}
+
 export function featurePath(slug, locale) {
   return locale === 'ru' ? `/ru/${slug}/` : `/${slug}/`;
 }

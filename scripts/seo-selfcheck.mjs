@@ -77,8 +77,13 @@ for (const locale of ['en', 'ru']) {
     if (!matches(html, /property="og:title"/) || !matches(html, /name="twitter:card"/)) fail(`${relativePath}: missing social metadata`);
     if (matches(html, /index-[A-Za-z0-9_-]+\.js|autoplay/)) fail(`${relativePath}: not lightweight`);
     if (!matches(html, /class="feature-video"[\s\S]*?preload="none"[\s\S]*?data-video-src=/)) fail(`${relativePath}: missing click-to-load product video`);
+    if (count(html, /<details>/g) < 4) fail(`${relativePath}: expected at least four FAQ items`);
   }
 }
+
+const featureVideoCss = read('assets/feature-video.css');
+if (!featureVideoCss.includes('aspect-ratio:16/9')) fail('feature video: expected compact 16:9 preview');
+if (!featureVideoCss.includes('.final-cta{background:transparent')) fail('final CTA: expected transparent background');
 
 const sitemap = read('sitemap.xml');
 const expectedUrls = [`${origin}/`, `${origin}/ru/`];
