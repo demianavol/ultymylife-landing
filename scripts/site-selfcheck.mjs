@@ -49,7 +49,7 @@ for (const page of [rootPage, ruPage]) {
   if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
   if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
   if (!page.includes('family=Golos+Text') || !page.includes('family=Playfair+Display')) throw new Error('Approved landing font pair is missing');
-  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=11') || !page.includes('landing-refresh.css?v=12')) throw new Error('Landing refresh cache version is stale');
+  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=11') || !page.includes('landing-refresh.css?v=13')) throw new Error('Landing refresh cache version is stale');
 }
 
 for (const contract of [
@@ -82,6 +82,10 @@ if (!refreshCss.includes('--mobile-gutter:20px')) throw new Error('Landing mobil
 if (!refreshCss.includes('grid-template-columns:1fr!important')) throw new Error('Landing mobile one-column grid contract is missing');
 if (!refreshCss.includes('width:100%!important')) throw new Error('Landing mobile full-width control contract is missing');
 if (!refreshCss.includes('overflow-x:clip')) throw new Error('Landing page overflow guard is missing');
+if (!refreshCss.includes('max-height:380px')) throw new Error('Mobile product screenshot must stay compact');
+if (!refreshCss.includes('width:170px!important')) throw new Error('Mobile product device must stay compact');
+if (!refreshCss.includes('padding:108px 22px 88px')) throw new Error('Telegram preview needs mobile breathing room');
+if (!refreshCss.includes('border-top:0')) throw new Error('Compact footer must not retain old divider');
 if (refreshCss.includes('scroll-snap-type:y proximity')) throw new Error('Landing must not use vertical scroll snap');
 if (refreshCss.includes('min-height:100svh')) throw new Error('Landing must not force viewport-height mobile sections');
 if (!appBundle.includes('function yf(){return!0}')) throw new Error('Runtime motion must be disabled at its source');
