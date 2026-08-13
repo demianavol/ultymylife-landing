@@ -175,7 +175,7 @@
     const heading = copy?.querySelector("h1");
     const paragraph = heading?.nextElementSibling;
     if (heading) heading.innerHTML = c.heroTitle;
-    text(paragraph, c.heroText);
+    paragraph?.remove();
     const heroBadges = lang() === "ru"
       ? [["Привычки", "/ru/habits/"], ["Тренировки", "/ru/workouts/"], ["Дыхание", "/ru/breathing-meditation/"], ["Тренировка ума", "/ru/mental-fitness/"], ["ИИ-подсказки", "/ru/ai-assistant/"], ["Сон", "/ru/sleep/"]]
       : [["Habits", "/habits/"], ["Workouts", "/workouts/"], ["Breathing", "/breathing-meditation/"], ["Mental fitness", "/mental-fitness/"], ["AI assistant", "/ai-assistant/"], ["Sleep", "/sleep/"]];
@@ -265,19 +265,24 @@
     copy?.classList.add("uml-product-copy-clean");
     const heading = copy?.querySelector("h3");
     const paragraphs = copy?.querySelectorAll(":scope > p");
-    const bullets = copy?.querySelectorAll(".mt-6 .flex");
     text(heading, activeTitle);
-    if ((paragraphs?.length || 0) >= 3) {
-      paragraphs[0].remove();
-      text(paragraphs[1], values[1]);
-      paragraphs[2].remove();
-    } else text(paragraphs?.[0], values[1]);
-    bullets?.forEach((bullet, index) => {
-      const textNode = Array.from(bullet.childNodes).find((node) => node.nodeType === Node.TEXT_NODE);
-      if (textNode && values[3][index] && textNode.nodeValue !== values[3][index]) textNode.nodeValue = values[3][index];
-    });
+    paragraphs?.forEach((paragraph) => paragraph.remove());
     copy?.querySelector("div:first-child")?.remove();
-    bullets?.forEach((bullet, index) => { if (index > 1) bullet.remove(); });
+    copy?.querySelector(".mt-6")?.remove();
+    let summary = copy?.querySelector(".uml-product-summary");
+    if (!summary && copy) {
+      summary = document.createElement("p");
+      summary.className = "uml-product-summary";
+      heading?.after(summary);
+    }
+    text(summary, values[1]);
+    let points = copy?.querySelector(".uml-product-points");
+    if (!points && copy) {
+      points = document.createElement("ul");
+      points.className = "uml-product-points";
+      summary?.after(points);
+    }
+    if (points) points.innerHTML = values[3].slice(0, 2).map((point) => `<li><span aria-hidden="true">✓</span>${point}</li>`).join("");
     document.querySelectorAll(".hero-module-button,.product-tab,.hero-real-phone-button").forEach((button) => {
       if (button.dataset.umlDynamicReady) return;
       button.dataset.umlDynamicReady = "true";
@@ -382,7 +387,8 @@
     old.replaceWith(preview);
   }
 
-  function roadmapCard(title, description) {
+  function roadmapCard(title, description, isNext = false) {
+    if (isNext) return `<div class="uml-roadmap-item"><span aria-hidden="true">&#8599;</span><div><h3>${title}</h3><p>${description}</p></div></div>`;
     return `<div class="uml-roadmap-item"><span aria-hidden="true">✓</span><div><h3>${title}</h3><p>${description}</p></div></div>`;
   }
 
@@ -393,13 +399,17 @@
     const c = content();
     grid.dataset.umlReady = "true";
     grid.innerHTML = `<div class="uml-roadmap-column is-done"><p class="uml-roadmap-label">${c.completed}</p>${c.doneItems.map((item) => roadmapCard(item[0], item[1])).join("")}</div>
-      <div class="uml-roadmap-column is-next"><p class="uml-roadmap-label">${c.plans}</p>${c.planItems.map((item) => roadmapCard(item[0], item[1])).join("")}</div>`;
+      <div class="uml-roadmap-column is-next"><p class="uml-roadmap-label">${c.plans}</p>${c.planItems.map((item) => roadmapCard(item[0], item[1], true)).join("")}</div>`;
   }
 
   function refreshFinalCta() {
     const c = content();
     const final = document.querySelector(".final-cta");
     if (!final) return;
+    final.classList.add("uml-final-line");
+    final.dataset.i18nIgnore = "true";
+    final.innerHTML = `<h2>${c.finalTitle}</h2><a class="primary-button" href="${LINKS[lang()]}" target="_blank" rel="noreferrer">${c.finalCta}<span aria-hidden="true">&#8599;</span></a>`;
+    return;
     const heading = final.querySelector("h2");
     text(heading?.previousElementSibling, lang() === "ru" ? "Начните сегодня" : "Start today");
     const paragraph = heading?.nextElementSibling;
