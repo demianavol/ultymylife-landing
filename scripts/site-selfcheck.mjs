@@ -49,7 +49,7 @@ for (const page of [rootPage, ruPage]) {
   if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
   if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
   if (!page.includes('family=Golos+Text') || !page.includes('family=Playfair+Display')) throw new Error('Approved landing font pair is missing');
-  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=12') || !page.includes('landing-refresh.css?v=14')) throw new Error('Landing refresh cache version is stale');
+  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=13') || !page.includes('landing-refresh.css?v=15')) throw new Error('Landing refresh cache version is stale');
 }
 
 for (const contract of [
@@ -84,19 +84,22 @@ if (!refreshCss.includes('width:100%!important')) throw new Error('Landing mobil
 if (!refreshCss.includes('overflow-x:clip')) throw new Error('Landing page overflow guard is missing');
 if (!refreshCss.includes('max-height:380px')) throw new Error('Mobile product screenshot must stay compact');
 if (!refreshCss.includes('width:170px!important')) throw new Error('Mobile product device must stay compact');
-if (!refreshCss.includes('padding:108px 22px 88px')) throw new Error('Telegram preview needs mobile breathing room');
+if (!refreshCss.includes('min-height:520px')) throw new Error('Telegram preview needs compact mobile flow');
 if (!refreshCss.includes('border-top:0')) throw new Error('Compact footer must not retain old divider');
 if (!refreshCss.includes('.uml-final-line')) throw new Error('Compact final CTA styles are missing');
 if (!refreshCss.includes('.uml-product-summary')) throw new Error('Compact product copy styles are missing');
+if (!refreshCss.includes('.uml-chat-wallpaper{position:relative')) throw new Error('Telegram mobile chat must use normal document flow');
 if (refreshCss.includes('scroll-snap-type:y proximity')) throw new Error('Landing must not use vertical scroll snap');
 if (refreshCss.includes('min-height:100svh')) throw new Error('Landing must not force viewport-height mobile sections');
 if (!appBundle.includes('function yf(){return!0}')) throw new Error('Runtime motion must be disabled at its source');
 if (!refresh.includes('hero-topic-link')) throw new Error('Hero topics must render as semantic links');
 if (!refresh.includes('paragraph?.remove()')) throw new Error('Hero subtitle must be removed');
 if (!refresh.includes('uml-product-summary')) throw new Error('Product copy needs compact summary markup');
-if (!refresh.includes('uml-product-points')) throw new Error('Product copy needs two key points');
+if (refresh.includes('uml-product-points')) throw new Error('Product copy must not contain extra key points');
 if (!refresh.includes('uml-final-line')) throw new Error('Final CTA must use the compact layout');
 if (!refresh.includes('isNext) return') || !refresh.includes('&#8599;')) throw new Error('Roadmap state icons must differ');
+if (!refresh.includes('pilotCta: "Открыть Mini App"')) throw new Error('Russian pilot CTA must avoid trial wording');
+if (!refresh.includes('pilotCta: "Open Mini App"')) throw new Error('English pilot CTA must avoid trial wording');
 if (!refresh.includes('/ru/breathing-meditation/')) throw new Error('Russian hero topic destinations are missing');
 if (!refresh.includes('/ai-assistant/')) throw new Error('English hero topic destinations are missing');
 if (refresh.includes('class="uml-footer-row"')) throw new Error('Removed footer marketing row must stay absent');

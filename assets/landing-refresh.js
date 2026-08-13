@@ -69,7 +69,7 @@
       pilotTitle: "Попробуйте UltyMyLife в своём ритме",
       pilotText: "Откройте Mini App, выберите один раздел и проживите с ним неделю. Так проще понять, что действительно помогает именно вам.",
       pilotSteps: [["1", "Выберите одну цель"], ["2", "Пользуйтесь 7 дней"], ["3", "Посмотрите свой прогресс"]],
-      pilotCta: "Начать бесплатно",
+      pilotCta: "Открыть Mini App",
     },
     en: {
       nav: ["Product", "Why it’s hard", "Features", "How it works", "Try it"],
@@ -123,7 +123,7 @@
       pilotTitle: "Try UltyMyLife at your own pace",
       pilotText: "Open the Mini App, choose one section and use it for a week. You’ll quickly see what genuinely helps you.",
       pilotSteps: [["1", "Choose one goal"], ["2", "Use it for 7 days"], ["3", "See your progress"]],
-      pilotCta: "Start for free",
+      pilotCta: "Open Mini App",
     },
   };
 
@@ -276,13 +276,6 @@
       heading?.after(summary);
     }
     text(summary, values[1]);
-    let points = copy?.querySelector(".uml-product-points");
-    if (!points && copy) {
-      points = document.createElement("ul");
-      points.className = "uml-product-points";
-      summary?.after(points);
-    }
-    if (points) points.innerHTML = values[3].slice(0, 2).map((point) => `<li><span aria-hidden="true">✓</span>${point}</li>`).join("");
     document.querySelectorAll(".hero-module-button,.product-tab,.hero-real-phone-button").forEach((button) => {
       if (button.dataset.umlDynamicReady) return;
       button.dataset.umlDynamicReady = "true";
