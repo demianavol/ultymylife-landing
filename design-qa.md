@@ -53,3 +53,9 @@ final result: passed
 - Build note: repository has no build script because GitHub Pages serves committed static files directly; HTTP route verification replaces a nonexistent build step.
 
 Final result: passed
+
+## 2026-08-13 — Feature card routes and click-to-load video
+
+- Landing desktop QA: 9 cards in `#solution`; each exposes role `link` and opens its matching SEO route. The after-footer SEO directory is absent.
+- Feature-page QA: `/habits/` starts with a poster and `preload="none"`; video `src` is empty before Play, then becomes `/assets/product/habits.mp4` only after user activation. No console errors.
+- Mapping: habits, tasks, workouts, recovery/breathing, mental fitness, and sleep use their own demo media. AI assistant, personal progress, and progress analytics use the approved main-screen demo.

@@ -75,7 +75,8 @@ for (const locale of ['en', 'ru']) {
       if (!html.includes(`"@type":"${type}"`)) fail(`${relativePath}: missing ${type} schema`);
     }
     if (!matches(html, /property="og:title"/) || !matches(html, /name="twitter:card"/)) fail(`${relativePath}: missing social metadata`);
-    if (matches(html, /index-[A-Za-z0-9_-]+\.js|<video\b|autoplay/)) fail(`${relativePath}: not lightweight`);
+    if (matches(html, /index-[A-Za-z0-9_-]+\.js|autoplay/)) fail(`${relativePath}: not lightweight`);
+    if (!matches(html, /class="feature-video"[\s\S]*?preload="none"[\s\S]*?data-video-src=/)) fail(`${relativePath}: missing click-to-load product video`);
   }
 }
 
@@ -97,14 +98,18 @@ for (const locale of ['en', 'ru']) {
   const homePath = locale === 'ru' ? 'ru/index.html' : 'index.html';
   const home = read(homePath);
   if (home.includes('seo-pages.css')) fail(`${homePath}: feature-page CSS must not override the app landing`);
-  for (const slug of slugs) {
-    const href = locale === 'ru' ? `/ru/${slug}/` : `/${slug}/`;
-    if (!home.includes(`href="${href}"`)) fail(`${homePath}: missing feature link ${href}`);
-  }
+  if (home.includes('seo-feature-directory')) fail(`${homePath}: feature directory belongs in the product cards, not after the footer`);
   for (const type of ['Organization', 'WebSite', 'SoftwareApplication']) {
     if (!home.includes(`"@type":"${type}"`)) fail(`${homePath}: missing ${type} schema`);
   }
 }
+
+const refresh = read('assets/landing-refresh.js');
+for (const slug of slugs) {
+  if (!refresh.includes(`"${slug}"`)) fail(`landing cards: missing route mapping for ${slug}`);
+}
+if (!refresh.includes('card.dataset.featurePath')) fail('landing cards: missing dynamic section route');
+if (!refresh.includes('card.setAttribute("role", "link")')) fail('landing cards: cards must expose links to assistive technology');
 
 if (failures.length) {
   console.error(`SEO self-check failed (${failures.length}):`);

@@ -16,6 +16,14 @@ function absoluteUrl(path) {
   return new URL(path, SITE.origin).href;
 }
 
+function videoFor(feature) {
+  return {
+    habits: '/assets/product/habits.mp4', tasks: '/assets/product/tasks.mov', workouts: '/assets/product/training.mov',
+    'breathing-meditation': '/assets/product/recovery.mp4', 'mental-fitness': '/assets/product/mental.mp4', sleep: '/assets/product/sleep.mp4',
+    'ai-assistant': '/assets/product/home.mov', 'personal-progress': '/assets/product/home.mov', 'progress-analytics': '/assets/product/home.mov',
+  }[feature.slug];
+}
+
 function renderFaq(items) {
   return items.map(({ question, answer }) => `
           <details>
@@ -88,10 +96,10 @@ function renderPage(feature, locale) {
   const homeLabel = isRu ? 'На главную' : 'Home';
   const labels = isRu ? {
     benefits: 'Что вы получите', how: 'Как это работает', faq: 'Частые вопросы', related: 'Другие возможности',
-    try: 'Попробовать в Telegram', mini: 'Открывается внутри Telegram', nav: 'Возможности UltyMyLife',
+    try: 'Попробовать в Telegram', mini: 'Открывается внутри Telegram', nav: 'Возможности UltyMyLife', demo: 'Посмотрите раздел в действии', play: 'Запустить видео',
   } : {
     benefits: 'What you get', how: 'How it works', faq: 'Frequently asked questions', related: 'Explore more',
-    try: 'Try it in Telegram', mini: 'Opens inside Telegram', nav: 'UltyMyLife features',
+    try: 'Try it in Telegram', mini: 'Opens inside Telegram', nav: 'UltyMyLife features', demo: 'See the section in action', play: 'Play video',
   };
 
   return `<!doctype html>
@@ -109,6 +117,8 @@ function renderPage(feature, locale) {
     <link rel="alternate" hreflang="x-default" href="${enUrl}">
     <link rel="icon" href="/assets/logo.jpg">
     <link rel="stylesheet" href="/assets/seo-pages.css">
+    <link rel="stylesheet" href="/assets/feature-video.css">
+    <script src="/assets/feature-video.js" defer></script>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="${SITE.name}">
     <meta property="og:title" content="${escapeHtml(copy.title)}">
@@ -151,6 +161,13 @@ function renderPage(feature, locale) {
         <h2 id="benefits-title">${escapeHtml(copy.eyebrow)}</h2>
         <div class="benefit-grid">${copy.benefits.map((benefit, index) => `
           <article><span class="number">0${index + 1}</span><p>${escapeHtml(benefit)}</p></article>`).join('')}
+        </div>
+      </section>
+      <section class="feature-demo" data-feature-video aria-labelledby="demo-title">
+        <div class="feature-demo-copy"><p class="section-kicker">${labels.demo}</p><h2 id="demo-title">${escapeHtml(copy.name)}</h2><p>${escapeHtml(copy.lead)}</p></div>
+        <div class="feature-video-wrap">
+          <video class="feature-video" poster="${feature.image[locale]}" preload="none" playsinline controls data-video-src="${videoFor(feature)}"></video>
+          <button class="feature-video-play" type="button" data-video-play aria-label="${labels.play}"><span aria-hidden="true">▶</span><span>${labels.play}</span></button>
         </div>
       </section>
       <section class="how-section" aria-labelledby="how-title">

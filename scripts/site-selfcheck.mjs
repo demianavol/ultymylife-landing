@@ -48,7 +48,7 @@ const cname = read('CNAME').trim();
 for (const page of [rootPage, ruPage]) {
   if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
   if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
-  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=8') || !page.includes('landing-refresh.css?v=8')) throw new Error('Landing refresh cache version is stale');
+  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=9') || !page.includes('landing-refresh.css?v=9')) throw new Error('Landing refresh cache version is stale');
 }
 
 for (const contract of [

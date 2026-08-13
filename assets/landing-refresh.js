@@ -321,24 +321,30 @@
     const c = content();
     const section = document.getElementById("solution");
     const cards = section?.querySelectorAll(".feature-card");
+    const featurePaths = [
+      "habits", "tasks", "workouts", "breathing-meditation", "mental-fitness", "sleep",
+      "ai-assistant", "personal-progress", "progress-analytics",
+    ];
     if (!cards?.length) return;
     cards.forEach((card, index) => {
       const feature = c.cards[index];
+      const slug = featurePaths[index];
       if (!feature) return;
       const heading = card.querySelector("h3");
       const paragraph = heading?.nextElementSibling;
       text(heading, feature[0]);
       text(paragraph, feature[1]);
-      card.setAttribute("role", "button");
+      card.setAttribute("role", "link");
       card.setAttribute("tabindex", "0");
       card.setAttribute("aria-label", `${c.watch}: ${feature[0]}`);
+      card.dataset.featurePath = `/${lang() === "ru" ? "ru/" : ""}${slug}/`;
       if (card.dataset.umlReady) return;
       card.dataset.umlReady = "true";
-      card.addEventListener("click", () => openModal({ title: feature[0], text: feature[1] }, card));
+      card.addEventListener("click", () => { location.href = card.dataset.featurePath; });
       card.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          openModal({ title: feature[0], text: feature[1] }, card);
+          location.href = card.dataset.featurePath;
         }
       });
     });
