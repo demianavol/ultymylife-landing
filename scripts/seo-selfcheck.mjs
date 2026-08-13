@@ -17,6 +17,17 @@ const slugs = [
 const failures = [];
 const titles = new Set();
 const descriptions = new Set();
+const mediaBySlug = {
+  habits: { enImage: 'habits', ruImage: 'recovery', video: 'habits.mp4' },
+  tasks: { enImage: 'tasks', ruImage: 'habits', video: 'tasks.mov' },
+  workouts: { image: 'training', video: 'training.mov' },
+  'breathing-meditation': { enImage: 'recovery', ruImage: 'mental', video: 'recovery.mp4' },
+  'mental-fitness': { enImage: 'mental', ruImage: 'sleep', video: 'mental.mp4' },
+  sleep: { enImage: 'sleep', ruImage: 'tasks', video: 'sleep.mp4' },
+  'ai-assistant': { image: 'home', video: 'home.mov' },
+  'personal-progress': { image: 'home', video: 'home.mov' },
+  'progress-analytics': { image: 'home', video: 'home.mov' },
+};
 
 function fail(message) {
   failures.push(message);
@@ -78,12 +89,27 @@ for (const locale of ['en', 'ru']) {
     if (matches(html, /index-[A-Za-z0-9_-]+\.js|autoplay/)) fail(`${relativePath}: not lightweight`);
     if (!matches(html, /class="feature-video"[\s\S]*?preload="none"[\s\S]*?data-video-src=/)) fail(`${relativePath}: missing click-to-load product video`);
     if (count(html, /<details>/g) < 4) fail(`${relativePath}: expected at least four FAQ items`);
+    const questions = [...html.matchAll(/<summary>([^<]+)<\/summary>/g)].map((match) => match[1].trim().toLocaleLowerCase(locale));
+    if (new Set(questions).size !== questions.length) fail(`${relativePath}: duplicate FAQ questions`);
+    if (slug === 'habits' && questions.some((question) => question.includes(locale === 'ru' ? 'устанавливать отдельное приложение' : 'install another app'))) fail(`${relativePath}: semantically repeated app-install FAQ`);
+    const expectedMedia = mediaBySlug[slug];
+    const imageExtension = locale === 'ru' ? 'jpg' : 'png';
+    const imagePrefix = locale === 'ru' ? '/assets/product/' : '/assets/product/en/';
+    const expectedImage = locale === 'ru' ? (expectedMedia.ruImage || expectedMedia.image) : (expectedMedia.enImage || expectedMedia.image);
+    if (!html.includes(`poster="${imagePrefix}${expectedImage}.${imageExtension}"`)) fail(`${relativePath}: wrong section poster`);
+    if (!html.includes(`data-video-src="/assets/product/${expectedMedia.video}"`)) fail(`${relativePath}: wrong section video`);
+    if (!html.includes('/assets/feature-video.css?v=2') || !html.includes('/assets/feature-video.js?v=2')) fail(`${relativePath}: feature assets must be cache-versioned`);
+    if (!html.includes('<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">')) fail(`${relativePath}: HTML cache prevention missing`);
   }
 }
 
 const featureVideoCss = read('assets/feature-video.css');
-if (!featureVideoCss.includes('aspect-ratio:16/9')) fail('feature video: expected compact 16:9 preview');
+if (!featureVideoCss.includes('aspect-ratio:853/1844')) fail('feature video: expected original portrait ratio');
+if (!featureVideoCss.includes('object-fit:contain')) fail('feature video: expected uncropped content');
+if (featureVideoCss.includes('object-fit:cover')) fail('feature video: must not crop content');
 if (!featureVideoCss.includes('.final-cta{background:transparent')) fail('final CTA: expected transparent background');
+if (!featureVideoCss.includes('.final-cta .primary-button{min-height:60px')) fail('final CTA: expected larger action button');
+if (!featureVideoCss.includes('.product-art{padding:5px')) fail('feature hero: expected a thinner media frame');
 
 const sitemap = read('sitemap.xml');
 const expectedUrls = [`${origin}/`, `${origin}/ru/`];

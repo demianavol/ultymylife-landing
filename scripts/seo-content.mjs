@@ -11,7 +11,7 @@ const faq = (en, ru) => ({ en, ru });
 
 export const FEATURES = [
   {
-    slug: 'habits', image: { en: '/assets/product/en/habits.png', ru: '/assets/product/habits.jpg' },
+    slug: 'habits', image: { en: '/assets/product/en/habits.png', ru: '/assets/product/recovery.jpg' },
     en: {
       name: 'Habit tracker', title: 'Habit tracker in Telegram — build routines that stick | UltyMyLife',
       description: 'Track daily habits, streaks and progress inside Telegram. Build useful routines without installing another habit tracker app.',
@@ -37,7 +37,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'tasks', image: { en: '/assets/product/en/tasks.png', ru: '/assets/product/tasks.jpg' },
+    slug: 'tasks', image: { en: '/assets/product/en/tasks.png', ru: '/assets/product/habits.jpg' },
     en: {
       name: 'Task planner', title: 'Task planner in Telegram — organize your day | UltyMyLife',
       description: 'Plan tasks, choose priorities and track completion in a Telegram Mini App. Keep today’s focus beside your habits and goals.',
@@ -79,7 +79,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'breathing-meditation', image: { en: '/assets/product/en/recovery.png', ru: '/assets/product/recovery.jpg' },
+    slug: 'breathing-meditation', image: { en: '/assets/product/en/recovery.png', ru: '/assets/product/mental.jpg' },
     en: {
       name: 'Breathing and meditation', title: 'Breathing exercises and meditation in Telegram | UltyMyLife',
       description: 'Use breathing exercises, meditation and recovery practices in Telegram. Create a simple pause for stress relief and daily balance.',
@@ -100,7 +100,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'mental-fitness', image: { en: '/assets/product/en/mental.png', ru: '/assets/product/mental.jpg' },
+    slug: 'mental-fitness', image: { en: '/assets/product/en/mental.png', ru: '/assets/product/sleep.jpg' },
     en: {
       name: 'Mental fitness', title: 'Mental fitness games for memory, logic and focus | UltyMyLife',
       description: 'Train memory, logic, speed and focus with short mental fitness activities inside Telegram. Track scores and build a regular brain-training rhythm.',
@@ -121,7 +121,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'sleep', image: { en: '/assets/product/en/sleep.png', ru: '/assets/product/sleep.jpg' },
+    slug: 'sleep', image: { en: '/assets/product/en/sleep.png', ru: '/assets/product/tasks.jpg' },
     en: {
       name: 'Sleep tracker', title: 'Sleep tracker in Telegram — duration and consistency | UltyMyLife',
       description: 'Track sleep duration, consistency and personal sleep notes in Telegram. Review your calendar and understand your recovery rhythm.',
@@ -242,13 +242,13 @@ for (const feature of FEATURES) {
 
 const sharedFaq = {
   en: [
-    { question: 'Do I need to install another app?', answer: 'No. UltyMyLife opens inside Telegram as a Mini App, so you can start without another download.' },
-    { question: 'Can I begin with only this section?', answer: 'Yes. Start with what matters now and add other sections only when they become useful.' },
+    { question: 'Will my progress stay connected to other sections?', answer: 'Yes. Your activity remains part of the same UltyMyLife system alongside the sections you choose to use.' },
+    { question: 'Can I return to this section later?', answer: 'Yes. Open UltyMyLife in Telegram whenever you want to continue and review your current progress.' },
     { question: 'Where can I open UltyMyLife?', answer: 'Open it from the UltyMyLife Telegram bot or any Mini App link.' },
   ],
   ru: [
-    { question: 'Нужно ли устанавливать отдельное приложение?', answer: 'Нет. UltyMyLife открывается внутри Telegram как Mini App — ничего дополнительно скачивать не нужно.' },
-    { question: 'Можно начать только с этого раздела?', answer: 'Да. Начните с того, что важно сейчас, а остальные разделы подключайте, когда они понадобятся.' },
+    { question: 'Прогресс будет связан с другими разделами?', answer: 'Да. Активность остаётся частью общей системы UltyMyLife рядом с теми разделами, которыми вы пользуетесь.' },
+    { question: 'Можно вернуться к этому разделу позже?', answer: 'Да. Откройте UltyMyLife в Telegram, когда захотите продолжить и посмотреть текущий прогресс.' },
     { question: 'Где открыть UltyMyLife?', answer: 'Откройте его через бота UltyMyLife в Telegram или по ссылке на Mini App.' },
   ],
 };

@@ -29,7 +29,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://ultymylife.com/habits/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://ultymylife.com/ru/habits/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ultymylife.com/habits/"/>
-    <image:image><image:loc>https://ultymylife.com/assets/product/habits.jpg</image:loc><image:title>Трекер привычек</image:title></image:image>
+    <image:image><image:loc>https://ultymylife.com/assets/product/recovery.jpg</image:loc><image:title>Трекер привычек</image:title></image:image>
     <lastmod>2026-08-12</lastmod>
   </url>
   <url>
@@ -45,7 +45,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://ultymylife.com/tasks/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://ultymylife.com/ru/tasks/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ultymylife.com/tasks/"/>
-    <image:image><image:loc>https://ultymylife.com/assets/product/tasks.jpg</image:loc><image:title>Планировщик задач</image:title></image:image>
+    <image:image><image:loc>https://ultymylife.com/assets/product/habits.jpg</image:loc><image:title>Планировщик задач</image:title></image:image>
     <lastmod>2026-08-12</lastmod>
   </url>
   <url>
@@ -77,7 +77,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://ultymylife.com/breathing-meditation/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://ultymylife.com/ru/breathing-meditation/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ultymylife.com/breathing-meditation/"/>
-    <image:image><image:loc>https://ultymylife.com/assets/product/recovery.jpg</image:loc><image:title>Дыхание и медитации</image:title></image:image>
+    <image:image><image:loc>https://ultymylife.com/assets/product/mental.jpg</image:loc><image:title>Дыхание и медитации</image:title></image:image>
     <lastmod>2026-08-12</lastmod>
   </url>
   <url>
@@ -93,7 +93,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://ultymylife.com/mental-fitness/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://ultymylife.com/ru/mental-fitness/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ultymylife.com/mental-fitness/"/>
-    <image:image><image:loc>https://ultymylife.com/assets/product/mental.jpg</image:loc><image:title>Тренировка ума</image:title></image:image>
+    <image:image><image:loc>https://ultymylife.com/assets/product/sleep.jpg</image:loc><image:title>Тренировка ума</image:title></image:image>
     <lastmod>2026-08-12</lastmod>
   </url>
   <url>
@@ -109,7 +109,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://ultymylife.com/sleep/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://ultymylife.com/ru/sleep/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ultymylife.com/sleep/"/>
-    <image:image><image:loc>https://ultymylife.com/assets/product/sleep.jpg</image:loc><image:title>Трекер сна</image:title></image:image>
+    <image:image><image:loc>https://ultymylife.com/assets/product/tasks.jpg</image:loc><image:title>Трекер сна</image:title></image:image>
     <lastmod>2026-08-12</lastmod>
   </url>
   <url>

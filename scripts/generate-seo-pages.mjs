@@ -107,6 +107,9 @@ function renderPage(feature, locale) {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>${escapeHtml(copy.title)}</title>
     <meta name="description" content="${escapeHtml(copy.description)}">
     <meta name="robots" content="index, follow, max-image-preview:large">
@@ -117,8 +120,8 @@ function renderPage(feature, locale) {
     <link rel="alternate" hreflang="x-default" href="${enUrl}">
     <link rel="icon" href="/assets/logo.jpg">
     <link rel="stylesheet" href="/assets/seo-pages.css">
-    <link rel="stylesheet" href="/assets/feature-video.css">
-    <script src="/assets/feature-video.js" defer></script>
+    <link rel="stylesheet" href="/assets/feature-video.css?v=2">
+    <script src="/assets/feature-video.js?v=2" defer></script>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="${SITE.name}">
     <meta property="og:title" content="${escapeHtml(copy.title)}">
