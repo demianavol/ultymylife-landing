@@ -13,6 +13,9 @@ const required = [
   'ru/terms/index.html',
   'consent/index.html',
   'ru/consent/index.html',
+  'go/index.html',
+  'go/redirect.js',
+  'go/redirect.css',
   'assets/legal.css',
   'assets/landing-refresh.js',
   'assets/landing-refresh.css',
@@ -44,6 +47,8 @@ const refresh = read('assets/landing-refresh.js');
 const refreshCss = read('assets/landing-refresh.css');
 const appBundle = read('assets/index-lBAux7Bw.js');
 const cname = read('CNAME').trim();
+const redirectPage = read('go/index.html');
+const redirectScript = read('go/redirect.js');
 
 for (const page of [rootPage, ruPage]) {
   if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
@@ -215,6 +220,10 @@ if (!i18n.includes('currentLang === "ru" ? MINI_APP_LINKS.ru : MINI_APP_LINKS.en
   throw new Error('Mini App CTA is not selected from current language');
 if (i18n.includes('/consent')) throw new Error('Generated landing footer still links to Consent');
 if (cname !== 'ultymylife.com') throw new Error('Landing CNAME must publish ultymylife.com');
+if (!redirectPage.includes('noindex,nofollow') || !redirectScript.includes('/api/marketing/click'))
+  throw new Error('/go must record a marketing click without being indexed');
+if (!redirectScript.includes('cmp_${code}_0_${language}') || !redirectScript.includes('window.location.replace'))
+  throw new Error('/go must preserve campaign attribution in its fallback redirect');
 if (/ultimatelife/i.test(all + i18n)) throw new Error('Misspelled domain remains');
 
 console.log('Landing site self-check passed');
