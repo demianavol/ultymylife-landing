@@ -1,6 +1,6 @@
 (() => {
   const API = 'https://api.ultymylife.com/api/marketing/click';
-  const TELEGRAM = 'https://t.me/UltyMyLife_bot/umlminiapp?startapp=';
+  const TELEGRAM = 'https://t.me/UltyMyLife_bot?startapp=';
   const code = new URLSearchParams(window.location.search).get('c') || '';
   const status = document.getElementById('status');
   const button = document.getElementById('continue');
@@ -18,7 +18,7 @@
   }
 
   if (!validCode) {
-    showLink('https://t.me/UltyMyLife_bot/umlminiapp', 'Ссылка повреждена. Можно открыть приложение без рекламной метки.');
+    showLink('https://t.me/UltyMyLife_bot?startapp', 'Ссылка повреждена. Можно открыть приложение без рекламной метки.');
     return;
   }
 
@@ -33,7 +33,7 @@
     .then(async response => {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const payload = await response.json();
-      if (typeof payload.deepLink !== 'string' || !payload.deepLink.startsWith('https://t.me/UltyMyLife_bot/')) throw new Error('Invalid redirect');
+      if (typeof payload.deepLink !== 'string' || !payload.deepLink.startsWith(TELEGRAM)) throw new Error('Invalid redirect');
       return payload.deepLink;
     })
     .catch(() => fallbackLink())

@@ -224,6 +224,10 @@ if (!redirectPage.includes('noindex,nofollow') || !redirectScript.includes('/api
   throw new Error('/go must record a marketing click without being indexed');
 if (!redirectScript.includes('cmp_${code}_0_${language}') || !redirectScript.includes('window.location.replace'))
   throw new Error('/go must preserve campaign attribution in its fallback redirect');
+if (!redirectScript.includes("const TELEGRAM = 'https://t.me/UltyMyLife_bot?startapp='"))
+  throw new Error('/go must open the configured Main Mini App');
+if (redirectScript.includes('UltyMyLife_bot/umlminiapp'))
+  throw new Error('/go must not use the legacy named Mini App');
 if (/ultimatelife/i.test(all + i18n)) throw new Error('Misspelled domain remains');
 
 console.log('Landing site self-check passed');
