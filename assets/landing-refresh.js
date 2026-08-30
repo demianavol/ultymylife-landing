@@ -193,12 +193,20 @@
     if (!phBadge && copy) {
       phBadge = document.createElement("div");
       phBadge.className = "hero-ph-badge";
+      phBadge.dataset.i18nIgnore = "true";
       phBadge.innerHTML = `<a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a>`;
-      const badges = copy.querySelector(".hero-badges");
       const ctaRow = copy.querySelector(".mt-9");
-      if (badges) badges.after(phBadge);
-      else if (ctaRow) ctaRow.after(phBadge);
-      else copy.appendChild(phBadge);
+      const switcher = copy.querySelector(".hero-screen-switcher");
+      const badges = copy.querySelector(".hero-badges");
+      if (ctaRow) {
+        ctaRow.after(phBadge);
+      } else if (switcher) {
+        switcher.before(phBadge);
+      } else if (badges) {
+        badges.after(phBadge);
+      } else {
+        copy.appendChild(phBadge);
+      }
     }
   }
 
@@ -584,8 +592,18 @@
       requestAnimationFrame(refreshDynamicProduct);
       return;
     }
-    if (attempt < 12) setTimeout(() => initializeRefresh(attempt + 1), 50);
+    if (attempt < 100) setTimeout(() => initializeRefresh(attempt + 1), 50);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => initializeRefresh());
   else initializeRefresh();
+
+  const root = document.getElementById("root");
+  if (root && window.MutationObserver) {
+    const observer = new MutationObserver(() => {
+      if (!document.body.dataset.umlRefreshReady && document.getElementById("top")) {
+        initializeRefresh();
+      }
+    });
+    observer.observe(root, { childList: true, subtree: true });
+  }
 })();
