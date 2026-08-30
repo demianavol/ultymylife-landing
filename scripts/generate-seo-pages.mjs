@@ -154,6 +154,9 @@ function renderPage(feature, locale) {
             <a class="primary-button" href="${telegramUrl(locale)}" rel="noopener">${labels.try}<span aria-hidden="true">↗</span></a>
             <span class="telegram-note">${labels.mini}</span>
           </div>
+          <div class="hero-ph-badge">
+            <a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a>
+          </div>
         </div>
         <figure class="product-art">
           <img src="${feature.image[locale]}" width="853" height="1844" alt="${escapeHtml(`${SITE.name} — ${copy.name}`)}" loading="eager" fetchpriority="high">
@@ -193,7 +196,7 @@ function renderPage(feature, locale) {
         <div class="related-grid">${renderRelated(feature, locale)}</div>
       </section>
     </main>
-    <footer><a href="${homePath}">${SITE.name}</a><span>© 2026 ${SITE.name}</span></footer>
+    <footer><a href="${homePath}">${SITE.name}</a><div class="footer-ph-badge"><a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a></div><span>© 2026 ${SITE.name}</span></footer>
   </body>
 </html>
 `;

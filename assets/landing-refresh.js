@@ -188,6 +188,18 @@
       link.textContent = item[0];
       badge.replaceWith(link);
     });
+
+    let phBadge = copy?.querySelector(".hero-ph-badge");
+    if (!phBadge && copy) {
+      phBadge = document.createElement("div");
+      phBadge.className = "hero-ph-badge";
+      phBadge.innerHTML = `<a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a>`;
+      const badges = copy.querySelector(".hero-badges");
+      const ctaRow = copy.querySelector(".mt-9");
+      if (badges) badges.after(phBadge);
+      else if (ctaRow) ctaRow.after(phBadge);
+      else copy.appendChild(phBadge);
+    }
   }
 
   function stopHeroMotion() {
@@ -502,7 +514,7 @@
     const ru = lang() === "ru";
     inner.className = "uml-footer-refined";
     inner.dataset.i18nIgnore = "true";
-    inner.innerHTML = `<div class="uml-footer-meta"><span>© 2026 UltyMyLife</span><nav class="uml-legal-links" aria-label="${ru ? "Правовые документы" : "Legal"}"><a href="${ru ? "/ru/privacy" : "/privacy"}">${ru ? "Конфиденциальность" : "Privacy"}</a><a href="${ru ? "/ru/terms" : "/terms"}">${ru ? "Условия" : "Terms"}</a></nav></div>`;
+    inner.innerHTML = `<div class="uml-footer-meta"><span>© 2026 UltyMyLife</span><div class="uml-footer-ph-badge"><a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a></div><nav class="uml-legal-links" aria-label="${ru ? "Правовые документы" : "Legal"}"><a href="${ru ? "/ru/privacy" : "/privacy"}">${ru ? "Конфиденциальность" : "Privacy"}</a><a href="${ru ? "/ru/terms" : "/terms"}">${ru ? "Условия" : "Terms"}</a></nav></div>`;
   }
 
   function refreshRemainingLabels() {
