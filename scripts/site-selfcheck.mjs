@@ -126,9 +126,10 @@ for (const detail of ['Авольстийный Демиан Любовьеви�
   if (!ruPrivacy.includes(detail) || !ruTerms.includes(detail))
     throw new Error(`Russian legal pages are missing operator detail: ${detail}`);
 }
-for (const page of [privacy, ruPrivacy, terms, ruTerms]) {
-  if (!page.includes('2026-08-09')) throw new Error('Legal page is missing version/effective date');
-}
+for (const page of [privacy, ruPrivacy]) if (!page.includes('2026-09-01')) throw new Error('Privacy page is missing current version/effective date');
+for (const page of [terms, ruTerms]) if (!page.includes('2026-08-09')) throw new Error('Terms page is missing current version/effective date');
+if (!ruPrivacy.includes('<strong>Обратная связь:</strong>') || !privacy.includes('<strong>Feedback:</strong>'))
+  throw new Error('Privacy pages must disclose identified feedback data');
 if (!ruTerms.includes('18+')) throw new Error('Russian Terms must state the 18+ restriction');
 if (!ruPrivacy.includes('7 календарных дней')) throw new Error('Russian Privacy must state deletion grace period');
 if (!ruPrivacy.includes('<h1>Политика в отношении обработки персональных данных</h1>'))
