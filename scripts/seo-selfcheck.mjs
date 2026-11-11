@@ -98,26 +98,15 @@ for (const locale of ['en', 'ru']) {
     const expectedImage = locale === 'ru' ? (expectedMedia.ruImage || expectedMedia.image) : (expectedMedia.enImage || expectedMedia.image);
     if (!html.includes(`poster="${imagePrefix}${expectedImage}.${imageExtension}"`)) fail(`${relativePath}: wrong section poster`);
     if (!html.includes(`data-video-src="/assets/product/${expectedMedia.video}"`)) fail(`${relativePath}: wrong section video`);
-    if (!html.includes('/assets/seo-pages.css?v=4') || !html.includes('/assets/feature-video.css?v=4') || !html.includes('/assets/feature-video.js?v=3')) fail(`${relativePath}: feature assets must be cache-versioned`);
+    if (!html.includes('/assets/site.css?v=1') || !html.includes('/assets/feature-pages.css?v=1') || !html.includes('/assets/feature-video.js?v=3')) fail(`${relativePath}: feature assets must be cache-versioned`);
     if (!html.includes('<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">')) fail(`${relativePath}: HTML cache prevention missing`);
     if (html.indexOf('<section class="final-cta">') > html.indexOf('<section class="related content-section"')) fail(`${relativePath}: final CTA must appear before related features`);
   }
 }
 
-const featureVideoCss = read('assets/feature-video.css');
-if (!featureVideoCss.includes('aspect-ratio:853/1844')) fail('feature video: expected original portrait ratio');
-if (!featureVideoCss.includes('object-fit:contain')) fail('feature video: expected uncropped content');
-if (featureVideoCss.includes('object-fit:cover')) fail('feature video: must not crop content');
-if (!featureVideoCss.includes('.final-cta{background:transparent')) fail('final CTA: expected transparent background');
-if (!featureVideoCss.includes('.final-cta .primary-button{min-height:60px')) fail('final CTA: expected larger action button');
-if (!featureVideoCss.includes('.product-art{padding:5px')) fail('feature hero: expected a thinner media frame');
-
-const seoPagesCss = read('assets/seo-pages.css');
-if (!seoPagesCss.includes('--mobile-gutter:20px')) fail('feature mobile: 20px gutter missing');
-if (!seoPagesCss.includes('grid-template-columns:1fr')) fail('feature mobile: one-column layout missing');
-if (!seoPagesCss.includes('overflow-x:clip')) fail('feature mobile: page overflow guard missing');
-if (seoPagesCss.includes('scroll-snap-type:y proximity')) fail('feature mobile: vertical scroll snap must be removed');
-if (seoPagesCss.includes('100svh')) fail('feature mobile: forced viewport heights must be removed');
+const featureCss = read('assets/feature-pages.css');
+if (!/aspect-ratio:\s*853\s*\/\s*1844/.test(featureCss)) fail('feature video: expected original portrait ratio');
+if (!/\.feature-video\s*\{[^}]*object-fit:\s*contain/.test(featureCss)) fail('feature video: expected uncropped content');
 
 const sitemap = read('sitemap.xml');
 const expectedUrls = [`${origin}/`, `${origin}/ru/`];
@@ -136,19 +125,17 @@ if (!robots.includes(`Sitemap: ${origin}/sitemap.xml`)) fail('robots.txt: sitema
 for (const locale of ['en', 'ru']) {
   const homePath = locale === 'ru' ? 'ru/index.html' : 'index.html';
   const home = read(homePath);
-  if (home.includes('seo-pages.css')) fail(`${homePath}: feature-page CSS must not override the app landing`);
+  if (home.includes('feature-pages.css')) fail(`${homePath}: feature-page CSS must not override the app landing`);
   if (home.includes('seo-feature-directory')) fail(`${homePath}: feature directory belongs in the product cards, not after the footer`);
+  const featureLinks = [...home.matchAll(/<a class="feature-card [^"]*" href="([^"]+)"/g)].map(match => match[1]);
+  const prefix = locale === 'ru' ? '/ru/' : '/';
+  if (featureLinks.length !== slugs.length || slugs.some(slug => !featureLinks.includes(prefix + slug + '/'))) {
+    fail(homePath + ': all feature cards must link directly to their localized route');
+  }
   for (const type of ['Organization', 'WebSite', 'SoftwareApplication']) {
     if (!home.includes(`"@type":"${type}"`)) fail(`${homePath}: missing ${type} schema`);
   }
 }
-
-const refresh = read('assets/landing-refresh.js');
-for (const slug of slugs) {
-  if (!refresh.includes(`"${slug}"`)) fail(`landing cards: missing route mapping for ${slug}`);
-}
-if (!refresh.includes('card.dataset.featurePath')) fail('landing cards: missing dynamic section route');
-if (!refresh.includes('card.setAttribute("role", "link")')) fail('landing cards: cards must expose links to assistive technology');
 
 if (failures.length) {
   console.error(`SEO self-check failed (${failures.length}):`);

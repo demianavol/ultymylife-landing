@@ -113,14 +113,14 @@ function renderPage(feature, locale) {
     <title>${escapeHtml(copy.title)}</title>
     <meta name="description" content="${escapeHtml(copy.description)}">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#07090f">
+    <meta name="theme-color" content="#11171c">
     <link rel="canonical" href="${canonical}">
     <link rel="alternate" hreflang="en" href="${enUrl}">
     <link rel="alternate" hreflang="ru" href="${ruUrl}">
     <link rel="alternate" hreflang="x-default" href="${enUrl}">
     <link rel="icon" href="/assets/logo.jpg">
-    <link rel="stylesheet" href="/assets/seo-pages.css?v=4">
-    <link rel="stylesheet" href="/assets/feature-video.css?v=4">
+    <link rel="stylesheet" href="/assets/site.css?v=1">
+    <link rel="stylesheet" href="/assets/feature-pages.css?v=1">
     <script src="/assets/feature-video.js?v=3" defer></script>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="${SITE.name}">
@@ -137,10 +137,10 @@ function renderPage(feature, locale) {
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="${homePath}" aria-label="${SITE.name} — ${homeLabel}">${SITE.name}</a>
+      <a class="brand" href="${homePath}" aria-label="${SITE.name} — ${homeLabel}"><img src="/assets/logo.jpg" width="34" height="34" alt="">${SITE.name}</a>
       <nav aria-label="${labels.nav}">
-        <a href="${featurePath(feature.slug, otherLocale)}" lang="${otherLocale}">${otherLabel}</a>
-        <a class="header-cta" href="${telegramUrl(locale)}" rel="noopener">${labels.try}</a>
+        <a href="${featurePath(feature.slug, otherLocale)}" lang="${otherLocale}" hreflang="${otherLocale}">${otherLabel}</a>
+        <a class="header-cta button button--quiet" href="${telegramUrl(locale)}" rel="noopener">${labels.try}</a>
       </nav>
     </header>
     <main>
@@ -151,11 +151,8 @@ function renderPage(feature, locale) {
           <h1>${escapeHtml(copy.name)}</h1>
           <p class="lead">${escapeHtml(copy.lead)}</p>
           <div class="cta-row">
-            <a class="primary-button" href="${telegramUrl(locale)}" rel="noopener">${labels.try}<span aria-hidden="true">↗</span></a>
+            <a class="button button--primary" href="${telegramUrl(locale)}" rel="noopener">${labels.try}<span aria-hidden="true">↗</span></a>
             <span class="telegram-note">${labels.mini}</span>
-          </div>
-          <div class="hero-ph-badge">
-            <a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a>
           </div>
         </div>
         <figure class="product-art">
@@ -188,7 +185,7 @@ function renderPage(feature, locale) {
       <section class="final-cta">
         <p class="eyebrow">${SITE.name}</p>
         <h2>${isRu ? 'Начните с одного полезного раздела' : 'Start with one useful section'}</h2>
-        <a class="primary-button" href="${telegramUrl(locale)}" rel="noopener">${labels.try}<span aria-hidden="true">↗</span></a>
+        <a class="button button--primary" href="${telegramUrl(locale)}" rel="noopener">${labels.try}<span aria-hidden="true">↗</span></a>
       </section>
       <section class="related content-section" aria-labelledby="related-title">
         <p class="section-kicker">${labels.related}</p>
@@ -196,7 +193,7 @@ function renderPage(feature, locale) {
         <div class="related-grid">${renderRelated(feature, locale)}</div>
       </section>
     </main>
-    <footer><a href="${homePath}">${SITE.name}</a><div class="footer-ph-badge"><a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a></div><span>© 2026 ${SITE.name}</span></footer>
+    <footer><a href="${homePath}">${SITE.name}</a><div class="footer-ph-badge"><a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer">Product Hunt <span aria-hidden="true">↗</span></a></div><span>© 2026 ${SITE.name}</span></footer>
   </body>
 </html>
 `;
