@@ -1,0 +1,46 @@
+.uml-device {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: clamp(12px, 1.35vw, 19px) 3px 3px;
+  border: 1px solid #969fa6;
+  border-right-color: #505a61;
+  border-bottom-color: #505a61;
+  border-radius: var(--device-radius, 24px);
+  background: #090d12;
+  box-shadow: 0 16px 30px #02050787, inset 0 0 0 1px #61697180;
+}
+
+.uml-device::before,
+.uml-device::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  border-radius: 2px;
+  background: #7a858f;
+  pointer-events: none;
+}
+
+.uml-device::before { top: 23%; left: -2px; height: 6%; box-shadow: 0 19px #67737d; }
+.uml-device::after { top: 29%; right: -2px; height: 9%; }
+
+.device-camera {
+  position: absolute;
+  top: clamp(4px, .4vw, 6px);
+  left: 50%;
+  width: 27%;
+  height: clamp(5px, .75vw, 10px);
+  translate: -50%;
+  border-radius: 999px;
+  background: radial-gradient(circle at 81% 50%, #22416a 0%, #080c13 9%, #030507 12%);
+  box-shadow: 0 0 0 1px #a6bcc514;
+}
+
+.uml-device > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--device-radius, 24px) - 4px);
+}

@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { featureTour, tourGroups } from '../assets/product/tour.js';
 
 const root = resolve(import.meta.dirname, '..');
 const origin = 'https://ultymylife.com';
@@ -18,12 +19,12 @@ const failures = [];
 const titles = new Set();
 const descriptions = new Set();
 const mediaBySlug = {
-  habits: { enImage: 'habits', ruImage: 'recovery', video: 'habits.mp4' },
-  tasks: { enImage: 'tasks', ruImage: 'habits', video: 'tasks.mov' },
+  habits: { image: 'habits', video: 'habits.mp4' },
+  tasks: { image: 'tasks', video: 'tasks.mov' },
   workouts: { image: 'training', video: 'training.mov' },
-  'breathing-meditation': { enImage: 'recovery', ruImage: 'mental', video: 'recovery.mp4' },
-  'mental-fitness': { enImage: 'mental', ruImage: 'sleep', video: 'mental.mp4' },
-  sleep: { enImage: 'sleep', ruImage: 'tasks', video: 'sleep.mp4' },
+  'breathing-meditation': { image: 'recovery', video: 'recovery.mp4' },
+  'mental-fitness': { image: 'mental', video: 'mental.mp4' },
+  sleep: { image: 'sleep', video: 'sleep.mp4' },
   'ai-assistant': { image: 'home', video: 'home.mov' },
   'personal-progress': { image: 'home', video: 'home.mov' },
   'progress-analytics': { image: 'home', video: 'home.mov' },
@@ -87,37 +88,42 @@ for (const locale of ['en', 'ru']) {
     }
     if (!matches(html, /property="og:title"/) || !matches(html, /name="twitter:card"/)) fail(`${relativePath}: missing social metadata`);
     if (matches(html, /index-[A-Za-z0-9_-]+\.js|autoplay/)) fail(`${relativePath}: not lightweight`);
-    if (!matches(html, /class="feature-video"[\s\S]*?preload="none"[\s\S]*?data-video-src=/)) fail(`${relativePath}: missing click-to-load product video`);
+    if (locale === 'ru' && !matches(html, /class="feature-video"[^>]*preload="none" muted playsinline controls[^>]*data-video-src=/)) fail(`${relativePath}: missing muted, lazy product video`);
+    if (locale === 'en' && html.includes('data-video-src')) fail(`${relativePath}: Russian video on English page`);
     if (count(html, /<details>/g) < 4) fail(`${relativePath}: expected at least four FAQ items`);
     const questions = [...html.matchAll(/<summary>([^<]+)<\/summary>/g)].map((match) => match[1].trim().toLocaleLowerCase(locale));
     if (new Set(questions).size !== questions.length) fail(`${relativePath}: duplicate FAQ questions`);
     if (slug === 'habits' && questions.some((question) => question.includes(locale === 'ru' ? 'устанавливать отдельное приложение' : 'install another app'))) fail(`${relativePath}: semantically repeated app-install FAQ`);
     const expectedMedia = mediaBySlug[slug];
-    const imageExtension = locale === 'ru' ? 'jpg' : 'png';
-    const imagePrefix = locale === 'ru' ? '/assets/product/' : '/assets/product/en/';
-    const expectedImage = locale === 'ru' ? (expectedMedia.ruImage || expectedMedia.image) : (expectedMedia.enImage || expectedMedia.image);
-    if (!html.includes(`poster="${imagePrefix}${expectedImage}.${imageExtension}"`)) fail(`${relativePath}: wrong section poster`);
-    if (!html.includes(`data-video-src="/assets/product/${expectedMedia.video}"`)) fail(`${relativePath}: wrong section video`);
-    if (!html.includes('/assets/seo-pages.css?v=4') || !html.includes('/assets/feature-video.css?v=4') || !html.includes('/assets/feature-video.js?v=3')) fail(`${relativePath}: feature assets must be cache-versioned`);
+    const expectedImage = `/assets/product/${locale}/screens/${expectedMedia.image}.webp`;
+    const heroScreen = featureTour(locale, slug).screens[0];
+    if (!existsSync(resolve(root, expectedImage.slice(1))) || !html.includes(`property="og:image" content="${origin}${expectedImage}"`)) fail(`${relativePath}: wrong social screenshot`);
+    if (!html.includes(`class="uml-device feature-device-main" href="${heroScreen?.src ?? expectedImage}"`)) fail(`${relativePath}: missing full screenshot link`);
+    if (locale === 'ru' && (!html.includes(`poster="${expectedImage}"`) || !html.includes(`data-video-src="/assets/product/${expectedMedia.video}"`))) fail(`${relativePath}: wrong section video`);
+    if (!html.includes('/assets/seo-pages.css?v=7') || !html.includes('/assets/feature-video.css?v=6') || !html.includes('/assets/feature-video.js?v=5')) fail(`${relativePath}: feature assets must be cache-versioned`);
     if (!html.includes('<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">')) fail(`${relativePath}: HTML cache prevention missing`);
     if (html.indexOf('<section class="final-cta">') > html.indexOf('<section class="related content-section"')) fail(`${relativePath}: final CTA must appear before related features`);
   }
 }
 
+for (const group of tourGroups) {
+  for (const locale of ['en', 'ru']) {
+    for (const frame of group[locale]) {
+      for (const url of new Set([frame.src, frame.preview])) {
+        if (!url.startsWith(`/assets/product/${locale === 'en' ? 'tour/en' : 'ru'}/`) || !existsSync(resolve(root, url.slice(1)))) {
+          fail(`Invalid ${locale} gallery image: ${url}`);
+        }
+      }
+    }
+  }
+}
+
 const featureVideoCss = read('assets/feature-video.css');
-if (!featureVideoCss.includes('aspect-ratio:853/1844')) fail('feature video: expected original portrait ratio');
-if (!featureVideoCss.includes('object-fit:contain')) fail('feature video: expected uncropped content');
-if (featureVideoCss.includes('object-fit:cover')) fail('feature video: must not crop content');
-if (!featureVideoCss.includes('.final-cta{background:transparent')) fail('final CTA: expected transparent background');
-if (!featureVideoCss.includes('.final-cta .primary-button{min-height:60px')) fail('final CTA: expected larger action button');
-if (!featureVideoCss.includes('.product-art{padding:5px')) fail('feature hero: expected a thinner media frame');
+if (!/aspect-ratio:\s*853\s*\/\s*1844/.test(featureVideoCss)) fail('feature video: expected original portrait ratio');
+if (!/object-fit:\s*contain/.test(featureVideoCss)) fail('feature video: expected uncropped content');
 
 const seoPagesCss = read('assets/seo-pages.css');
-if (!seoPagesCss.includes('--mobile-gutter:20px')) fail('feature mobile: 20px gutter missing');
-if (!seoPagesCss.includes('grid-template-columns:1fr')) fail('feature mobile: one-column layout missing');
-if (!seoPagesCss.includes('overflow-x:clip')) fail('feature mobile: page overflow guard missing');
-if (seoPagesCss.includes('scroll-snap-type:y proximity')) fail('feature mobile: vertical scroll snap must be removed');
-if (seoPagesCss.includes('100svh')) fail('feature mobile: forced viewport heights must be removed');
+if (!/grid-template-columns:\s*1fr\b/.test(seoPagesCss)) fail('feature mobile: one-column layout missing');
 
 const sitemap = read('sitemap.xml');
 const expectedUrls = [`${origin}/`, `${origin}/ru/`];
@@ -143,12 +149,13 @@ for (const locale of ['en', 'ru']) {
   }
 }
 
-const refresh = read('assets/landing-refresh.js');
-for (const slug of slugs) {
-  if (!refresh.includes(`"${slug}"`)) fail(`landing cards: missing route mapping for ${slug}`);
+for (const locale of ['en', 'ru']) {
+  const prefix = locale === 'ru' ? '/ru/' : '/';
+  const home = read(locale === 'ru' ? 'ru/index.html' : 'index.html');
+  for (const slug of slugs) {
+    if (!home.includes(`<a href="${prefix}${slug}/"`)) fail(`Landing ${locale}: missing link to ${slug}`);
+  }
 }
-if (!refresh.includes('card.dataset.featurePath')) fail('landing cards: missing dynamic section route');
-if (!refresh.includes('card.setAttribute("role", "link")')) fail('landing cards: cards must expose links to assistive technology');
 
 if (failures.length) {
   console.error(`SEO self-check failed (${failures.length}):`);

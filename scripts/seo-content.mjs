@@ -8,10 +8,14 @@ export const SITE = {
 };
 
 const faq = (en, ru) => ({ en, ru });
+const localizedScreen = name => ({
+  en: `/assets/product/en/screens/${name}.webp`,
+  ru: `/assets/product/ru/screens/${name}.webp`,
+});
 
 export const FEATURES = [
   {
-    slug: 'habits', image: { en: '/assets/product/en/habits.png', ru: '/assets/product/recovery.jpg' },
+    slug: 'habits', image: localizedScreen('habits'),
     en: {
       name: 'Habit tracker', title: 'Habit tracker in Telegram — build routines that stick | UltyMyLife',
       description: 'Track daily habits, streaks and progress inside Telegram. Build useful routines without installing another habit tracker app.',
@@ -37,7 +41,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'tasks', image: { en: '/assets/product/en/tasks.png', ru: '/assets/product/habits.jpg' },
+    slug: 'tasks', image: localizedScreen('tasks'),
     en: {
       name: 'Task planner', title: 'Task planner in Telegram — organize your day | UltyMyLife',
       description: 'Plan tasks, choose priorities and track completion in a Telegram Mini App. Keep today’s focus beside your habits and goals.',
@@ -58,7 +62,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'workouts', image: { en: '/assets/product/en/training.png', ru: '/assets/product/training.jpg' },
+    slug: 'workouts', image: localizedScreen('training'),
     en: {
       name: 'Workout diary', title: 'Workout diary in Telegram — log training progress | UltyMyLife',
       description: 'Keep a workout diary, training calendar and activity history inside Telegram. See consistency and progress without a separate fitness log.',
@@ -79,7 +83,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'breathing-meditation', image: { en: '/assets/product/en/recovery.png', ru: '/assets/product/mental.jpg' },
+    slug: 'breathing-meditation', image: localizedScreen('recovery'),
     en: {
       name: 'Breathing and meditation', title: 'Breathing exercises and meditation in Telegram | UltyMyLife',
       description: 'Use breathing exercises, meditation and recovery practices in Telegram. Create a simple pause for stress relief and daily balance.',
@@ -100,7 +104,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'mental-fitness', image: { en: '/assets/product/en/mental.png', ru: '/assets/product/sleep.jpg' },
+    slug: 'mental-fitness', image: localizedScreen('mental'),
     en: {
       name: 'Mental fitness', title: 'Mental fitness games for memory, logic and focus | UltyMyLife',
       description: 'Train memory, logic, speed and focus with short mental fitness activities inside Telegram. Track scores and build a regular brain-training rhythm.',
@@ -121,7 +125,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'sleep', image: { en: '/assets/product/en/sleep.png', ru: '/assets/product/tasks.jpg' },
+    slug: 'sleep', image: localizedScreen('sleep'),
     en: {
       name: 'Sleep tracker', title: 'Sleep tracker in Telegram — duration and consistency | UltyMyLife',
       description: 'Track sleep duration, consistency and personal sleep notes in Telegram. Review your calendar and understand your recovery rhythm.',
@@ -142,7 +146,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'ai-assistant', image: { en: '/assets/product/en/home.png', ru: '/assets/product/home.jpg' },
+    slug: 'ai-assistant', image: localizedScreen('home'),
     en: {
       name: 'AI assistant', title: 'AI assistant for habits, tasks and daily reflection | UltyMyLife',
       description: 'Use an AI-ready personal system in Telegram to review habits, tasks and recovery context. Get clearer prompts from the data you choose to track.',
@@ -163,7 +167,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'personal-progress', image: { en: '/assets/product/en/home.png', ru: '/assets/product/home.jpg' },
+    slug: 'personal-progress', image: localizedScreen('home'),
     en: {
       name: 'Personal progress', title: 'Personal progress tracker for habits and goals | UltyMyLife',
       description: 'Track personal progress across habits, tasks, training, sleep and recovery in one Telegram Mini App. See how daily actions add up.',
@@ -184,7 +188,7 @@ export const FEATURES = [
     },
   },
   {
-    slug: 'progress-analytics', image: { en: '/assets/product/en/home.png', ru: '/assets/product/home.jpg' },
+    slug: 'progress-analytics', image: localizedScreen('home'),
     en: {
       name: 'Progress analytics', title: 'Progress analytics for habits, sleep and workouts | UltyMyLife',
       description: 'Review progress analytics across habits, tasks, workouts, sleep and recovery. Turn daily records into a clearer picture inside Telegram.',

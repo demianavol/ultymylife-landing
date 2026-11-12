@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { featureTour } from '../assets/product/tour.js';
 import { FEATURES, SITE, featurePath, telegramUrl } from './seo-content.mjs';
 
 const root = resolve(import.meta.dirname, '..');
@@ -82,6 +83,10 @@ function renderSchemas(feature, locale) {
   };
 }
 
+function screenImage(screen, { eager = false } = {}) {
+  return `<img src="${screen.preview}" width="${screen.previewWidth}" height="${screen.previewHeight}" alt="${escapeHtml(screen.title)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+}
+
 function renderPage(feature, locale) {
   const isRu = locale === 'ru';
   const copy = feature[locale];
@@ -90,16 +95,24 @@ function renderPage(feature, locale) {
   const enUrl = absoluteUrl(featurePath(feature.slug, 'en'));
   const ruUrl = absoluteUrl(featurePath(feature.slug, 'ru'));
   const imageUrl = absoluteUrl(feature.image[locale]);
+  const tour = featureTour(locale, feature.slug);
+  const [primary, companion, ...details] = tour.screens;
+  const fallback = {
+    title: isRu ? 'Экран UltyMyLife' : 'UltyMyLife screen',
+    src: feature.image[locale], preview: feature.image[locale], previewWidth: 825, previewHeight: 1539,
+  };
+  const heroScreen = primary ?? fallback;
   const otherLocale = isRu ? 'en' : 'ru';
   const otherLabel = isRu ? 'EN' : 'RU';
   const homePath = isRu ? '/ru/' : '/';
   const homeLabel = isRu ? 'На главную' : 'Home';
+  const webApp = `https://app.ultymylife.com/?lang=${locale}`;
   const labels = isRu ? {
     benefits: 'Что вы получите', how: 'Как это работает', faq: 'Частые вопросы', related: 'Другие возможности',
-    try: 'Попробовать в Telegram', mini: 'Открывается внутри Telegram', nav: 'Возможности UltyMyLife', demo: 'Посмотрите раздел в действии', play: 'Запустить видео',
+    try: 'Открыть в Telegram', web: 'Открыть веб-приложение', nav: 'Возможности UltyMyLife', demo: 'Посмотрите раздел в действии', play: 'Запустить видео', fullScreen: 'Открыть экран целиком',
   } : {
     benefits: 'What you get', how: 'How it works', faq: 'Frequently asked questions', related: 'Explore more',
-    try: 'Try it in Telegram', mini: 'Opens inside Telegram', nav: 'UltyMyLife features', demo: 'See the section in action', play: 'Play video',
+    try: 'Open in Telegram', web: 'Open web app', nav: 'UltyMyLife features', demo: 'A closer look', fullScreen: 'Open full screenshot',
   };
 
   return `<!doctype html>
@@ -113,15 +126,19 @@ function renderPage(feature, locale) {
     <title>${escapeHtml(copy.title)}</title>
     <meta name="description" content="${escapeHtml(copy.description)}">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#07090f">
+    <meta name="theme-color" content="#080a0b">
     <link rel="canonical" href="${canonical}">
     <link rel="alternate" hreflang="en" href="${enUrl}">
     <link rel="alternate" hreflang="ru" href="${ruUrl}">
     <link rel="alternate" hreflang="x-default" href="${enUrl}">
-    <link rel="icon" href="/assets/logo.jpg">
-    <link rel="stylesheet" href="/assets/seo-pages.css?v=4">
-    <link rel="stylesheet" href="/assets/feature-video.css?v=4">
-    <script src="/assets/feature-video.js?v=3" defer></script>
+    <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="64x64">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Golos+Text:wght@400..700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/product/device.css?v=2">
+    <link rel="stylesheet" href="/assets/seo-pages.css?v=7">
+    <link rel="stylesheet" href="/assets/feature-video.css?v=6">
+    <script src="/assets/feature-video.js?v=5" defer></script>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="${SITE.name}">
     <meta property="og:title" content="${escapeHtml(copy.title)}">
@@ -137,14 +154,14 @@ function renderPage(feature, locale) {
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="${homePath}" aria-label="${SITE.name} — ${homeLabel}">${SITE.name}</a>
+      <a class="brand" href="${homePath}" data-studio-home aria-label="${SITE.name} — ${homeLabel}"><img src="/assets/brand-mark.svg?v=2" alt="" width="24" height="24">${SITE.name}</a>
       <nav aria-label="${labels.nav}">
         <a href="${featurePath(feature.slug, otherLocale)}" lang="${otherLocale}">${otherLabel}</a>
         <a class="header-cta" href="${telegramUrl(locale)}" rel="noopener">${labels.try}</a>
       </nav>
     </header>
     <main>
-      <div class="breadcrumbs"><a href="${homePath}">${homeLabel}</a><span aria-hidden="true">/</span><span>${escapeHtml(copy.name)}</span></div>
+      <div class="breadcrumbs"><a href="${homePath}" data-studio-home>${homeLabel}</a><span aria-hidden="true">/</span><span>${escapeHtml(copy.name)}</span></div>
       <section class="feature-hero">
         <div class="hero-copy">
           <p class="eyebrow">${escapeHtml(copy.eyebrow)}</p>
@@ -152,29 +169,36 @@ function renderPage(feature, locale) {
           <p class="lead">${escapeHtml(copy.lead)}</p>
           <div class="cta-row">
             <a class="primary-button" href="${telegramUrl(locale)}" rel="noopener">${labels.try}<span aria-hidden="true">↗</span></a>
-            <span class="telegram-note">${labels.mini}</span>
-          </div>
-          <div class="hero-ph-badge">
-            <a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a>
+            <a class="secondary-button" href="${webApp}">${labels.web}<span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <figure class="product-art">
-          <img src="${feature.image[locale]}" width="853" height="1844" alt="${escapeHtml(`${SITE.name} — ${copy.name}`)}" loading="eager" fetchpriority="high">
+        <figure class="product-art" style="--art-tone:${tour.tone}">
+          <div class="feature-devices">
+            <a class="uml-device feature-device-main" href="${heroScreen.src}" target="_blank" rel="noopener" aria-label="${labels.fullScreen} — ${escapeHtml(heroScreen.title)}">
+              <span class="device-camera" aria-hidden="true"></span>${screenImage(heroScreen, { eager: true })}
+            </a>${companion ? `
+            <a class="uml-device feature-device-companion" href="${companion.src}" target="_blank" rel="noopener" aria-label="${labels.fullScreen} — ${escapeHtml(companion.title)}"><span class="device-camera" aria-hidden="true"></span>${screenImage(companion)}</a>` : ''}
+          </div>
+          <figcaption><span aria-hidden="true"></span> ${escapeHtml(copy.name)} <a href="${heroScreen.src}" target="_blank" rel="noopener">${labels.fullScreen} <span aria-hidden="true">↗</span></a></figcaption>
         </figure>
       </section>
       <section class="content-section" aria-labelledby="benefits-title">
         <p class="section-kicker">${labels.benefits}</p>
         <h2 id="benefits-title">${escapeHtml(copy.eyebrow)}</h2>
-        <div class="benefit-grid">${copy.benefits.map((benefit, index) => `
-          <article><span class="number">0${index + 1}</span><p>${escapeHtml(benefit)}</p></article>`).join('')}
-        </div>
+        <ul class="benefit-grid">${copy.benefits.map(benefit => `
+          <li>${escapeHtml(benefit)}</li>`).join('')}
+        </ul>
       </section>
-      <section class="feature-demo" data-feature-video aria-labelledby="demo-title">
-        <div class="feature-demo-copy"><p class="section-kicker">${labels.demo}</p><h2 id="demo-title">${escapeHtml(copy.name)}</h2><p>${escapeHtml(copy.lead)}</p></div>
-        <div class="feature-video-wrap">
-          <video class="feature-video" poster="${feature.image[locale]}" preload="none" playsinline controls data-video-src="${videoFor(feature)}"></video>
+      <section class="feature-demo"${isRu ? ' data-feature-video' : ''} aria-labelledby="demo-title">
+        <div class="feature-demo-copy"><p class="section-kicker">${labels.demo}</p><h2 id="demo-title">${escapeHtml(copy.name)}</h2>${isRu
+          ? `<p>${escapeHtml(copy.lead)}</p>`
+          : `<a class="secondary-button feature-full" href="${heroScreen.src}" target="_blank" rel="noopener">${labels.fullScreen}<span aria-hidden="true">↗</span></a>`}</div>
+        ${isRu ? `<div class="feature-video-wrap">
+          <video class="feature-video" poster="${feature.image[locale]}" preload="none" muted playsinline controls data-video-src="${videoFor(feature)}"></video>
           <button class="feature-video-play" type="button" data-video-play aria-label="${labels.play}"><span aria-hidden="true">▶</span><span>${labels.play}</span></button>
-        </div>
+        </div>` : `<div class="feature-detail">
+          ${(details.length ? details : [companion || heroScreen]).map(screen => `<a href="${screen.src}" target="_blank" rel="noopener" aria-label="${labels.fullScreen} — ${escapeHtml(screen.title)}">${screenImage(screen)}<span>${escapeHtml(screen.title)} <span aria-hidden="true">↗</span></span></a>`).join('')}
+        </div>`}
       </section>
       <section class="how-section" aria-labelledby="how-title">
         <div><p class="section-kicker">${labels.how}</p><h2 id="how-title">${escapeHtml(copy.name)} + Telegram</h2></div>
@@ -196,7 +220,7 @@ function renderPage(feature, locale) {
         <div class="related-grid">${renderRelated(feature, locale)}</div>
       </section>
     </main>
-    <footer><a href="${homePath}">${SITE.name}</a><div class="footer-ph-badge"><a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0" target="_blank" rel="noopener noreferrer"><img alt="UltyMyLife 2.0 - Habits, tasks, workouts, sleep, mind, recovery &amp; AI insights | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1236379&amp;theme=dark&amp;t=1788081201734"></a></div><span>© 2026 ${SITE.name}</span></footer>
+    <footer><a href="${homePath}" data-studio-home>${SITE.name}</a><a href="https://www.producthunt.com/products/ultymylife" target="_blank" rel="noopener noreferrer">Product Hunt <span aria-hidden="true">↗</span></a><span>© 2026 ${SITE.name}</span></footer>
   </body>
 </html>
 `;
@@ -228,8 +252,8 @@ async function generate() {
   }
 
   const entries = [
-    sitemapEntry('/', '/assets/product/en/home.png', 'UltyMyLife Telegram Mini App'),
-    sitemapEntry('/ru/', '/assets/product/home.jpg', 'UltyMyLife — система внутри Telegram'),
+    sitemapEntry('/', '/assets/product/en/screens/home.webp', 'UltyMyLife Telegram Mini App'),
+    sitemapEntry('/ru/', '/assets/product/ru/screens/home.webp', 'UltyMyLife — система внутри Telegram'),
   ];
   for (const feature of FEATURES) {
     entries.push(sitemapEntry(featurePath(feature.slug, 'en'), feature.image.en, feature.en.name));

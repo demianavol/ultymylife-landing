@@ -17,15 +17,15 @@ const required = [
   'go/redirect.js',
   'go/redirect.css',
   'assets/legal.css',
-  'assets/landing-refresh.js',
-  'assets/landing-refresh.css',
-  'assets/product/en/home.png',
-  'assets/product/en/recovery.png',
-  'assets/product/en/tasks.png',
-  'assets/product/en/habits.png',
-  'assets/product/en/sleep.png',
-  'assets/product/en/training.png',
-  'assets/product/en/mental.png',
+  'assets/brand-mark.svg',
+  'assets/favicon.png',
+  'assets/logo.jpg',
+  'assets/product/landing.js',
+  'assets/product/landing.css',
+  'assets/product/infographic-viewer.js',
+  'assets/product/infographic-viewer.css',
+  'studio-preview/index.html',
+  'studio-preview/en/index.html',
 ];
 
 for (const file of required) {
@@ -42,78 +42,58 @@ const terms = read('terms/index.html');
 const ruTerms = read('ru/terms/index.html');
 const consentRedirect = read('consent/index.html');
 const ruConsentRedirect = read('ru/consent/index.html');
-const i18n = read('assets/i18n.js');
-const refresh = read('assets/landing-refresh.js');
-const refreshCss = read('assets/landing-refresh.css');
-const appBundle = read('assets/index-lBAux7Bw.js');
 const cname = read('CNAME').trim();
 const redirectPage = read('go/index.html');
 const redirectScript = read('go/redirect.js');
 
-for (const page of [rootPage, ruPage]) {
-  if (!page.includes('assets/landing-refresh.js')) throw new Error('Landing refresh script is missing');
-  if (!page.includes('assets/landing-refresh.css')) throw new Error('Landing refresh stylesheet is missing');
-  if (!page.includes('family=Golos+Text') || !page.includes('family=Playfair+Display')) throw new Error('Approved landing font pair is missing');
-  if (!page.includes('index-lBAux7Bw.js?v=8') || !page.includes('landing-refresh.js?v=14') || !page.includes('landing-refresh.css?v=16')) throw new Error('Landing refresh cache version is stale');
+const landingPages = [
+  [rootPage, 'en'], [ruPage, 'ru'],
+  [read('studio-preview/index.html'), 'ru'], [read('studio-preview/en/index.html'), 'en'],
+];
+for (const [page, locale] of landingPages) {
+  const telegram = 'https://t.me/UltyMyLife_bot/umlminiapp' + (locale === 'ru' ? '?startapp=lang_ru' : '');
+  if (!page.includes(`href="${telegram}"`) || !page.includes(`href="https://app.ultymylife.com/?lang=${locale}"`)) {
+    throw new Error(`Landing launch links must match ${locale}`);
+  }
+  if (!page.includes('href="/assets/favicon.png"') || !page.includes('src="/assets/brand-mark.svg?v=2"')) {
+    throw new Error('Landing brand assets changed');
+  }
+  if (!page.includes('assets/product/landing.js') || !page.includes('assets/product/landing.css') || !page.includes('family=Golos+Text')) {
+    throw new Error('Landing assets are missing');
+  }
+  for (const anchor of ['top', 'product', 'problem', 'solution', 'audience', 'telegram', 'journey', 'pilots', 'contacts', 'status', 'grants', 'partners']) {
+    if (!page.includes(`id="${anchor}"`)) throw new Error(`Landing anchor #${anchor} is missing`);
+  }
+  const heroImages = locale === 'ru'
+    ? ['ru/hero/habits.webp', 'ru/hero/home.webp', 'ru/hero/mental.webp']
+    : ['tour/en/habits/habits.webp', 'tour/en/home/main-menu.webp', 'tour/en/mental/mind.webp'];
+  const hero = page.split('<div class="hero-media">')[1]?.split('</section>')[0] || '';
+  for (const image of heroImages) {
+    const asset = `assets/product/${image}`;
+    if (!hero.includes(`src="/${asset}"`) || !fs.existsSync(path.join(root, asset))) {
+      throw new Error(`Missing ${locale} hero image: ${asset}`);
+    }
+  }
+  const gallery = JSON.parse(page.match(/<script type="application\/json" id="showcase-entries">([^<]+)<\/script>/)?.[1] || 'null');
+  const sections = ['habits', 'tasks', 'training', 'recovery', 'mind', 'sleep'];
+  if (gallery?.length !== sections.length) throw new Error('The gallery must contain six sections');
+  const directory = locale === 'ru' ? '/assets/product/showcase/ru' : '/assets/product/showcase';
+  for (const [index, entry] of gallery.entries()) {
+    const base = `${directory}/${sections[index]}`;
+    if (entry.src !== `${base}.webp` || entry.small !== `${base}-${entry.smallWidth}.webp`) {
+      throw new Error(`Wrong ${locale} image for ${sections[index]}`);
+    }
+    const images = [entry.src, entry.small];
+    if (locale === 'ru') images.push(`${base}.png`);
+    for (const image of images) {
+      if (!fs.existsSync(path.join(root, image))) throw new Error(`Missing gallery image: ${image}`);
+    }
+  }
 }
-
-for (const contract of [
-  'role", "dialog', 'aria-modal', 'event.key === "Escape"', 'playsinline',
-  'startapp=lang_ru', '/assets/product/en/home.png', '/assets/product/en/habits.png',
-  'Интерфейс внутри Telegram', 'uml-telegram-preview', 'Standalone website',
-  'refreshDynamicProduct', 'uml-pilot-experience', 'uml-journey-compact',
-  'hero-real-phone-button', 'refreshCompactCards', 'refreshFooter',
-  'Дыхание и медитации', 'uml-modal-poster-bg',
-  'removeSectionDescriptions', 'uml-low-glow',
-  'navTargets', 'heroBadges', 'lang() === "ru" ? "/ru/" : "/"',
-  'uml-performance', 'scheduleProductRefresh', 'initializeRefresh',
-  'stopHeroMotion', 'hero-device-static',
-]) {
-  if (!refresh.includes(contract)) throw new Error(`Landing refresh behavior missing: ${contract}`);
-}
-if (!refreshCss.includes('@media(max-width:768px)')) throw new Error('Mobile landing policy is missing');
-if (!refreshCss.includes('@media(prefers-reduced-motion:reduce)')) throw new Error('Reduced-motion policy is missing');
-if (!refreshCss.includes('object-fit:contain')) throw new Error('Modal videos must remain fully visible');
-if (!refreshCss.includes('.uml-refreshed #top h1{line-height:1.02')) throw new Error('Hero heading needs safe line spacing');
-if (!refreshCss.includes('left:50%;transform:translateX(-50%)')) throw new Error('Desktop navigation must be centered');
-if (!refreshCss.includes('.uml-footer-refined')) throw new Error('Landing footer needs structured layout');
-if (!refreshCss.includes('.uml-modal-poster-bg')) throw new Error('Modal media needs an edge-filling poster backdrop');
-if (!refreshCss.includes('align-self:flex-start')) throw new Error('Compact card icons must remain top-aligned');
-if (!refreshCss.includes('box-shadow:none!important')) throw new Error('Landing needs restrained glow policy');
-if (!refreshCss.includes('.uml-performance')) throw new Error('Landing needs a performance-first rendering policy');
-if (!refreshCss.includes("font-family:'Golos Text'")) throw new Error('Landing body font must use Golos Text');
-if (!refreshCss.includes("font-family:'Playfair Display'")) throw new Error('Landing headings must use Playfair Display');
-if (!refreshCss.includes('--mobile-gutter:20px')) throw new Error('Landing mobile gutter contract is missing');
-if (!refreshCss.includes('grid-template-columns:1fr!important')) throw new Error('Landing mobile one-column grid contract is missing');
-if (!refreshCss.includes('width:100%!important')) throw new Error('Landing mobile full-width control contract is missing');
-if (!refreshCss.includes('overflow-x:clip')) throw new Error('Landing page overflow guard is missing');
-if (!refreshCss.includes('max-height:380px')) throw new Error('Mobile product screenshot must stay compact');
-if (!refreshCss.includes('width:170px!important')) throw new Error('Mobile product device must stay compact');
-if (!refreshCss.includes('min-height:520px')) throw new Error('Telegram preview needs compact mobile flow');
-if (!refreshCss.includes('border-top:0')) throw new Error('Compact footer must not retain old divider');
-if (!refreshCss.includes('.uml-final-line')) throw new Error('Compact final CTA styles are missing');
-if (!refreshCss.includes('.uml-product-summary')) throw new Error('Compact product copy styles are missing');
-if (!refreshCss.includes('.uml-chat-wallpaper{position:relative')) throw new Error('Telegram mobile chat must use normal document flow');
-if (refreshCss.includes('scroll-snap-type:y proximity')) throw new Error('Landing must not use vertical scroll snap');
-if (refreshCss.includes('min-height:100svh')) throw new Error('Landing must not force viewport-height mobile sections');
-if (!appBundle.includes('function yf(){return!0}')) throw new Error('Runtime motion must be disabled at its source');
-if (!refresh.includes('hero-topic-link')) throw new Error('Hero topics must render as semantic links');
-if (!refresh.includes('paragraph?.remove()')) throw new Error('Hero subtitle must be removed');
-if (!refresh.includes('uml-product-summary')) throw new Error('Product copy needs compact summary markup');
-if (refresh.includes('uml-product-points')) throw new Error('Product copy must not contain extra key points');
-if (!refresh.includes('uml-final-line')) throw new Error('Final CTA must use the compact layout');
-if (!refresh.includes('isNext) return') || !refresh.includes('&#8599;')) throw new Error('Roadmap state icons must differ');
-if (!refresh.includes('pilotCta: "Открыть Mini App"')) throw new Error('Russian pilot CTA must avoid trial wording');
-if (!refresh.includes('pilotCta: "Open Mini App"')) throw new Error('English pilot CTA must avoid trial wording');
-if (!refresh.includes('/ru/breathing-meditation/')) throw new Error('Russian hero topic destinations are missing');
-if (!refresh.includes('/ai-assistant/')) throw new Error('English hero topic destinations are missing');
-if (refresh.includes('class="uml-footer-row"')) throw new Error('Removed footer marketing row must stay absent');
-if (refresh.includes('hero.querySelectorAll(".hero-shot,.floating-card,.hero-ring").forEach((node) => node.remove())')) throw new Error('Hero decoration must stay visible');
-if (!refreshCss.includes('.uml-refreshed #top .hero-copy{ transform:translate(-30px,-90px)}')) throw new Error('Desktop hero copy must stay below the fixed header');
 
 if (!rootPage.includes('<html lang="en">')) throw new Error('Root landing must be English');
 if (!ruPage.includes('<html lang="ru">')) throw new Error('/ru landing must be Russian');
-if (!ruPage.includes('<base href="/"')) throw new Error('/ru landing must resolve assets from the domain root');
+if (ruPage.includes('<base ')) throw new Error('/ru landing anchors must resolve on the Russian page');
 if (!rootPage.includes('https://ultymylife.com/')) throw new Error('Root canonical URL is missing');
 if (!ruPage.includes('https://ultymylife.com/ru')) throw new Error('Russian canonical URL is missing');
 if (!all.includes('https://t.me/UltyMyLife_bot/umlminiapp')) throw new Error('Telegram Mini App CTA is missing');
@@ -177,7 +157,7 @@ if (!/<meta[^>]+http-equiv=["']refresh["'][^>]+url=\/ru\/privacy/i.test(ruConsen
 if (!consentRedirect.includes('href="/privacy"') || !ruConsentRedirect.includes('href="/ru/privacy"'))
   throw new Error('Legacy consent redirects need clickable Privacy fallbacks');
 
-const activeLegalPages = [privacy, ruPrivacy, terms, ruTerms, i18n].join('\n');
+const activeLegalPages = [privacy, ruPrivacy, terms, ruTerms, rootPage, ruPage].join('\n');
 if (/href=["'](?:\/ru)?\/consent["']/i.test(activeLegalPages))
   throw new Error('Active pages must not link to a standalone consent document');
 if (/Personal-data consent is requested separately|Согласие на обработку персональных данных оформляется отдельно/i.test(activeLegalPages))
@@ -214,12 +194,6 @@ for (const route of ['/privacy', '/terms']) {
     throw new Error(`RU/EN legal cross-link is missing: ${route}`);
 }
 if (/USERNAME_PLACEHOLDER|EMAIL_PLACEHOLDER/.test(all)) throw new Error('Placeholder contact remains public');
-if (!i18n.includes('https://t.me/demianworkself')) throw new Error('Generated landing contact repair is missing');
-if (!i18n.includes('https://t.me/UltyMyLife_bot/umlminiapp')) throw new Error('English Mini App deep link is missing');
-if (!i18n.includes('https://t.me/UltyMyLife_bot/umlminiapp?startapp=lang_ru')) throw new Error('Russian Mini App deep link is missing');
-if (!i18n.includes('currentLang === "ru" ? MINI_APP_LINKS.ru : MINI_APP_LINKS.en'))
-  throw new Error('Mini App CTA is not selected from current language');
-if (i18n.includes('/consent')) throw new Error('Generated landing footer still links to Consent');
 if (cname !== 'ultymylife.com') throw new Error('Landing CNAME must publish ultymylife.com');
 if (!redirectPage.includes('noindex,nofollow') || !redirectScript.includes('/api/marketing/click'))
   throw new Error('/go must record a marketing click without being indexed');
@@ -229,6 +203,6 @@ if (!redirectScript.includes("const TELEGRAM = 'https://t.me/UltyMyLife_bot?star
   throw new Error('/go must open the configured Main Mini App');
 if (redirectScript.includes('UltyMyLife_bot/umlminiapp'))
   throw new Error('/go must not use the legacy named Mini App');
-if (/ultimatelife/i.test(all + i18n)) throw new Error('Misspelled domain remains');
+if (/ultimatelife/i.test(all)) throw new Error('Misspelled domain remains');
 
 console.log('Landing site self-check passed');

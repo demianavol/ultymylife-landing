@@ -18,25 +18,111 @@
     <link rel="alternate" hreflang="en" href="https://ultymylife.com/" />
     <link rel="alternate" hreflang="ru" href="https://ultymylife.com/ru" />
     <link rel="alternate" hreflang="x-default" href="https://ultymylife.com/" />
-    <link rel="icon" href="assets/logo.jpg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap"
-      rel="stylesheet"
-    />
     <title>UltyMyLife — self-development in one place</title>
-    <script type="module" crossorigin src="assets/index-lBAux7Bw.js?v=8"></script>
-    <script src="assets/i18n.js?v=fix-loop-1" defer></script>
-    <script src="assets/landing-refresh.js?v=14" defer></script>
-    <link rel="stylesheet" crossorigin href="assets/index-DEwb94bM.css" />
-    <link rel="stylesheet" href="assets/landing-refresh.css?v=16" />
-    <meta property="og:image" content="https://ultymylife.com/assets/product/en/home.png" />
+    <meta property="og:image" content="https://ultymylife.com/assets/product/en/screens/home.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://ultymylife.com/assets/product/en/home.png" />
+    <meta name="twitter:image" content="https://ultymylife.com/assets/product/en/screens/home.webp" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://ultymylife.com/#organization","name":"UltyMyLife","url":"https://ultymylife.com/","logo":"https://ultymylife.com/assets/logo.jpg"},{"@type":"WebSite","@id":"https://ultymylife.com/#website","name":"UltyMyLife","url":"https://ultymylife.com/","publisher":{"@id":"https://ultymylife.com/#organization"},"inLanguage":["en","ru"]},{"@type":"SoftwareApplication","@id":"https://ultymylife.com/#app","name":"UltyMyLife","applicationCategory":"LifestyleApplication","operatingSystem":"Telegram","url":"https://t.me/UltyMyLife_bot/umlminiapp","description":"Habits, tasks, workouts, sleep, recovery and mental fitness in one Telegram Mini App."}]}</script>
+    <!-- landing:assets -->
+    <script>
+    if (new URLSearchParams(location.search).get("lang")?.toLowerCase() === "ru") {
+      location.replace("/ru/" + location.search + location.hash);
+    }
+    </script>
+    <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="64x64">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Golos+Text:wght@400..700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+    <link rel="preload" href="/studio-preview/art/home.webp" as="image">
+    <link rel="stylesheet" href="/assets/product/device.css?v=2">
+    <link rel="stylesheet" href="/assets/product/landing.css?v=3">
+    <link rel="stylesheet" href="/assets/product/infographic-viewer.css?v=1">
+    <script type="module" src="/assets/product/landing.js?v=2"></script>
+    <!-- /landing:assets -->
   </head>
   <body>
-    <div id="root"></div>
+<header class="topbar glass">
+  <a class="brand" href="#top"><img src="/assets/brand-mark.svg?v=2" alt="" width="27" height="27">UltyMyLife</a>
+  <nav class="main-nav" aria-label="Navigation">
+    <a href="#product">Features</a>
+    <a href="#telegram">Getting started</a>
+  </nav>
+  <div class="language" aria-label="Language">
+    <a href="/ru/" lang="ru">RU</a><a href="/" lang="en" aria-current="page">EN</a>
+  </div>
+</header>
+<main>
+  <section class="hero" id="top">
+    <div class="hero-copy" id="problem">
+      <h1><span>Bring your day</span> <em>together</em></h1>
+      <p>Habits, tasks, workouts, sleep, and personal growth in one app</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="https://t.me/UltyMyLife_bot/umlminiapp">Open in Telegram<span aria-hidden="true">↗</span></a>
+        <a class="button button-secondary" href="https://app.ultymylife.com/?lang=en">Open in browser<span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="uml-device hero-device hero-device-left">
+        <span class="device-camera" aria-hidden="true"></span>
+        <img src="/assets/product/tour/en/habits/habits.webp" alt="Habits" width="860" height="1944" decoding="async">
+      </div><div class="uml-device hero-device hero-device-main">
+        <span class="device-camera" aria-hidden="true"></span>
+        <img src="/assets/product/tour/en/home/main-menu.webp" alt="Day overview" width="860" height="2248" fetchpriority="high">
+      </div><div class="uml-device hero-device hero-device-right">
+        <span class="device-camera" aria-hidden="true"></span>
+        <img src="/assets/product/tour/en/mental/mind.webp" alt="Mind training" width="860" height="1864" decoding="async">
+      </div>
+    </div>
+  </section>
+  <section class="demo frame" id="product" aria-labelledby="gallery-title">
+    <span id="solution" class="anchor-alias" aria-hidden="true"></span>
+    <h2 id="gallery-title">UltyMyLife in action</h2>
+    <nav class="demo-switcher" aria-label="Features">
+      <a href="/habits/" id="section-tab-0" data-module="0">Habits</a><a href="/tasks/" id="section-tab-1" data-module="1">Tasks</a><a href="/workouts/" id="section-tab-2" data-module="2">Training</a><a href="/breathing-meditation/" id="section-tab-3" data-module="3">Recovery</a><a href="/mental-fitness/" id="section-tab-4" data-module="4">Mind</a><a href="/sleep/" id="section-tab-5" data-module="5">Sleep</a>
+    </nav>
+    <div class="demo-scene" id="gallery-panel">
+      <div class="demo-copy">
+        <h3>Habits</h3>
+        <p>See what’s on your list today and check things off as you go.</p>
+        <a class="demo-detail text-link" href="/habits/">Learn about this feature<span aria-hidden="true">→</span></a>
+      </div>
+      <a class="demo-poster" href="/assets/product/showcase/habits.webp" aria-label="Open full-size infographic">
+        <img src="/assets/product/showcase/habits-560.webp" srcset="/assets/product/showcase/habits-560.webp 560w, /assets/product/showcase/habits.webp 1122w" sizes="(max-width: 720px) calc(100vw - 40px), (max-width: 1000px) 52vw, 490px" width="1122" height="1402" alt="Infographic for «Habits»" loading="lazy" decoding="async">
+        <span class="poster-expand" aria-hidden="true">⤢</span>
+      </a>
+    </div>
+    <script type="application/json" id="showcase-entries">[{"title":"Habits","description":"See what’s on your list today and check things off as you go.","href":"/habits/","src":"/assets/product/showcase/habits.webp","small":"/assets/product/showcase/habits-560.webp","width":1122,"height":1402,"smallWidth":560,"alt":"Infographic for «Habits»"},{"title":"Tasks","description":"Sort tasks by urgency and importance, then start a timer for the one you pick.","href":"/tasks/","src":"/assets/product/showcase/tasks.webp","small":"/assets/product/showcase/tasks-560.webp","width":1122,"height":1402,"smallWidth":560,"alt":"Infographic for «Tasks»"},{"title":"Training","description":"Pick exercises from the library and revisit your past workout entries.","href":"/workouts/","src":"/assets/product/showcase/training.webp","small":"/assets/product/showcase/training-560.webp","width":1122,"height":1402,"smallWidth":560,"alt":"Infographic for «Training»"},{"title":"Recovery","description":"Choose a breathing exercise or meditation and follow the guided session.","href":"/breathing-meditation/","src":"/assets/product/showcase/recovery.webp","small":"/assets/product/showcase/recovery-560.webp","width":1122,"height":1402,"smallWidth":560,"alt":"Infographic for «Recovery»"},{"title":"Mind","description":"Choose a quick exercise and see how you score against your personal best.","href":"/mental-fitness/","src":"/assets/product/showcase/mind.webp","small":"/assets/product/showcase/mind-560.webp","width":1122,"height":1402,"smallWidth":560,"alt":"Infographic for «Mind»"},{"title":"Sleep","description":"Log your sleep and how you feel in the morning, then compare nights in the calendar.","href":"/sleep/","src":"/assets/product/showcase/sleep.webp","small":"/assets/product/showcase/sleep-560.webp","width":1122,"height":1402,"smallWidth":560,"alt":"Infographic for «Sleep»"}]</script>
+  </section>
+  <section class="start frame" id="telegram" aria-labelledby="start-title">
+    <h2 id="start-title">Getting started</h2>
+    <ol id="journey">
+      <li><h3>Open the app</h3><p>Use Telegram or your browser. No installation needed.</p></li><li><h3>Pick a section</h3><p>For example, add a task you want to finish today.</p></li><li id="pilots"><h3>Log your first action</h3><p>Mark it done and return to your entries to see your progress.</p></li>
+    </ol>
+  </section>
+  <section class="final frame" aria-labelledby="final-title">
+    <h2 id="final-title">Start with one thing</h2>
+    <div class="final-actions">
+      <a class="button button-primary" href="https://t.me/UltyMyLife_bot/umlminiapp">Open in Telegram<span aria-hidden="true">↗</span></a>
+      <a class="button button-secondary" href="https://app.ultymylife.com/?lang=en">Open web app<span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+</main>
+<footer class="frame" id="contacts">
+  <span id="partners" class="anchor-alias" aria-hidden="true"></span>
+  <span id="status" class="anchor-alias" aria-hidden="true"></span>
+  <span id="grants" class="anchor-alias" aria-hidden="true"></span>
+  <nav aria-label="More in the app" id="audience">
+    <a href="/personal-progress/">Profile</a><a href="/progress-analytics/">Statistics</a><a href="/ai-assistant/">AI assistant</a>
+  </nav>
+  <div class="footer-bottom">
+    <span>© 2026 UltyMyLife</span>
+    <nav aria-label="Site information">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="https://t.me/demianworkself">Contact</a>
+      <a href="https://www.producthunt.com/products/ultymylife?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultymylife-2-0">Product Hunt</a>
+    </nav>
+  </div>
+</footer>
   </body>
 </html>
