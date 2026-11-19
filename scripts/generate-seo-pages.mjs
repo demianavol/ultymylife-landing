@@ -131,7 +131,8 @@ function renderPage(feature, locale) {
     <link rel="alternate" hreflang="en" href="${enUrl}">
     <link rel="alternate" hreflang="ru" href="${ruUrl}">
     <link rel="alternate" hreflang="x-default" href="${enUrl}">
-    <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="64x64">
+    <link rel="icon" href="/assets/favicon.png?v=bloom" type="image/png" sizes="64x64">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Golos+Text:wght@400..700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
@@ -154,7 +155,7 @@ function renderPage(feature, locale) {
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="${homePath}" data-studio-home aria-label="${SITE.name} — ${homeLabel}"><img src="/assets/brand-mark.svg?v=2" alt="" width="24" height="24">${SITE.name}</a>
+      <a class="brand" href="${homePath}" data-studio-home aria-label="${SITE.name} — ${homeLabel}"><img src="/assets/brand-mark.png" alt="" width="24" height="24">${SITE.name}</a>
       <nav aria-label="${labels.nav}">
         <a href="${featurePath(feature.slug, otherLocale)}" lang="${otherLocale}">${otherLabel}</a>
         <a class="header-cta" href="${telegramUrl(locale)}" rel="noopener">${labels.try}</a>

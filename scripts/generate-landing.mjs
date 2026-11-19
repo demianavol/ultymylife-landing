@@ -151,7 +151,7 @@ function renderLanding(locale, preview) {
   const [first] = entries;
   const phones = [['left', 'habits'], ['main', 'home'], ['right', 'mental']];
   return `<header class="topbar glass">
-  <a class="brand" href="#top"><img src="/assets/brand-mark.svg?v=2" alt="" width="27" height="27">UltyMyLife</a>
+  <a class="brand" href="#top"><img src="/assets/brand-mark.png" alt="" width="27" height="27">UltyMyLife</a>
   <nav class="main-nav" aria-label="${text.navigation}">
     <a href="#product">${text.features}</a>
     <a href="#telegram">${text.start}</a>
@@ -232,7 +232,8 @@ function renderLanding(locale, preview) {
 </footer>`;
 }
 
-const sharedHead = `<link rel="icon" href="/assets/favicon.png" type="image/png" sizes="64x64">
+const sharedHead = `<link rel="icon" href="/assets/favicon.png?v=bloom" type="image/png" sizes="64x64">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="${fontUrl}" rel="stylesheet">

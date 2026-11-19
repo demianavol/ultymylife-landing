@@ -17,7 +17,8 @@ const required = [
   'go/redirect.js',
   'go/redirect.css',
   'assets/legal.css',
-  'assets/brand-mark.svg',
+  'assets/brand-mark.png',
+  'assets/apple-touch-icon.png',
   'assets/favicon.png',
   'assets/logo.jpg',
   'assets/product/landing.js',
@@ -55,7 +56,7 @@ for (const [page, locale] of landingPages) {
   if (!page.includes(`href="${telegram}"`) || !page.includes(`href="https://app.ultymylife.com/?lang=${locale}"`)) {
     throw new Error(`Landing launch links must match ${locale}`);
   }
-  if (!page.includes('href="/assets/favicon.png"') || !page.includes('src="/assets/brand-mark.svg?v=2"')) {
+  if (!page.includes('href="/assets/favicon.png?v=bloom"') || !page.includes('src="/assets/brand-mark.png"')) {
     throw new Error('Landing brand assets changed');
   }
   if (!page.includes('assets/product/landing.js') || !page.includes('assets/product/landing.css') || !page.includes('family=Golos+Text')) {
