@@ -56,7 +56,7 @@ for (const [page, locale] of landingPages) {
   if (!page.includes(`href="${telegram}"`) || !page.includes(`href="https://app.ultymylife.com/?lang=${locale}"`)) {
     throw new Error(`Landing launch links must match ${locale}`);
   }
-  if (!page.includes('href="/assets/favicon.png?v=bloom"') || !page.includes('src="/assets/brand-mark.png"')) {
+  if (!page.includes('href="/assets/favicon.png?v=bloom2"') || !page.includes('src="/assets/brand-mark.png?v=bloom2"')) {
     throw new Error('Landing brand assets changed');
   }
   if (!page.includes('assets/product/landing.js') || !page.includes('assets/product/landing.css') || !page.includes('family=Golos+Text')) {
